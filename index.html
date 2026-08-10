@@ -438,12 +438,12 @@
               <div class="form-grid">
                 <div class="form-group">
                   <label>Saved Account Email</label>
-                  <input type="email" class="form-control" id="profEmail" required placeholder="student@school.edu">
+                  <input type="email" class="form-control" id="profEmail" required placeholder="student@school.edu" readonly>
                 </div>
                 <div class="form-group">
                   <label>Saved Account Password</label>
                   <div class="password-wrapper">
-                    <input type="password" class="form-control" id="profPassword" placeholder="••••••••">
+                    <input type="password" class="form-control" id="profPassword" placeholder="••••••••" value="••••••••" readonly>
                     <button type="button" class="peek-btn" onclick="togglePasswordVisibility('profPassword', this)" title="Toggle Password Visibility">👁️</button>
                   </div>
                 </div>
@@ -609,7 +609,38 @@
 
   </main>
 
-  <script>
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+    import { 
+      getAuth, 
+      createUserWithEmailAndPassword, 
+      signInWithEmailAndPassword,
+      signOut,
+      onAuthStateChanged
+    } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+    import { 
+      getFirestore, 
+      doc, 
+      setDoc, 
+      getDoc 
+    } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+    // FIREBASE CONFIGURATION OBJECT PROVIDED BY USER
+    const firebaseConfig = {
+      apiKey: "AIzaSyBUX4nsKqNQyRjUA6NCd_pbEJGQlbn7Vbw",
+      authDomain: "apexapply-69cd6.firebaseapp.com",
+      projectId: "apexapply-69cd6",
+      storageBucket: "apexapply-69cd6.firebasestorage.app",
+      messagingSenderId: "510755433251",
+      appId: "1:510755433251:web:1b33e2a9116636a6cd7a96",
+      measurementId: "G-CMLT4PGSN5"
+    };
+
+    // Initialize Firebase
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
+
     const EMBEDDED_API_KEY = "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";
 
     // EXPANDED COMPREHENSIVE U.S. COLLEGE DATABASE COVERING PUBLIC, PRIVATE, LIBERAL ARTS & STATE FLAGSHIPS
@@ -685,9 +716,10 @@
       { name: "Pepperdine University", type: "Private", policy: "Need-Aware", location: "Malibu, CA", acceptRate: 52.0, sat25: 1240, sat75: 1420, act25: 27, act75: 32, finAidPercent: 47, avgAidPackage: "$33,400", fullNeedMet: false, avgGpa: 3.69, csRating: "7/10", entRating: "7.5/10" }
     ];
 
-    let profileState = JSON.parse(localStorage.getItem('apex_v5_profile')) || {
-      email: "student@school.edu",
-      password: "••••••••",
+    let currentUserUid = null;
+
+    let profileState = {
+      email: "",
       gpa: 3.85, 
       rigor: "4", 
       satOption: "score", 
@@ -702,18 +734,47 @@
       lorScore: 4.0
     };
 
-    let selectedColleges = JSON.parse(localStorage.getItem('apex_v5_colleges')) || [
+    let selectedColleges = [
       { name: "Amherst College", status: "In Progress", outcome: "Awaiting Feedback" },
       { name: "Vanderbilt University", status: "Submitted", outcome: "Accepted" },
       { name: "Stanford University", status: "Not Started", outcome: "Awaiting Feedback" }
     ];
 
-    function toggleDrawer() {
+    // Listen to Firebase Auth state changes
+    onAuthStateChanged(auth, async (user) => {
+      if (user) {
+        currentUserUid = user.uid;
+        document.getElementById('authOverlay').style.display = 'none';
+        
+        // Fetch user document from Firestore
+        try {
+          const docRef = doc(db, "users", user.uid);
+          const docSnap = await getDoc(docRef);
+          if (docSnap.exists()) {
+            const data = docSnap.data();
+            if (data.profile) profileState = data.profile;
+            if (data.colleges) selectedColleges = data.colleges;
+          } else {
+            // First time login for this user, create initial record in Firestore
+            profileState.email = user.email;
+            await setDoc(docRef, { profile: profileState, colleges: selectedColleges });
+          }
+        } catch (err) {
+          console.error("Error loading user profile:", err);
+        }
+        renderAll();
+      } else {
+        currentUserUid = null;
+        document.getElementById('authOverlay').style.display = 'flex';
+      }
+    });
+
+    window.toggleDrawer = function() {
       document.getElementById('drawer').classList.toggle('active');
       document.getElementById('drawerOverlay').classList.toggle('active');
-    }
+    };
 
-    function togglePasswordVisibility(inputId, btn) {
+    window.togglePasswordVisibility = function(inputId, btn) {
       const input = document.getElementById(inputId);
       if (input.type === "password") {
         input.type = "text";
@@ -722,9 +783,9 @@
         input.type = "password";
         btn.innerText = "👁️";
       }
-    }
+    };
 
-    function switchView(viewId) {
+    window.switchView = function(viewId) {
       document.querySelectorAll('.view-panel').forEach(panel => panel.classList.remove('active'));
       document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
       
@@ -743,10 +804,10 @@
       if (document.getElementById('drawer').classList.contains('active')) toggleDrawer();
       renderAll();
       window.scrollTo({ top: 0, behavior: 'smooth' });
-    }
+    };
 
     let authMode = 'login';
-    function switchAuthTab(type) {
+    window.switchAuthTab = function(type) {
       authMode = type;
       document.querySelectorAll('.auth-tab').forEach(t => t.classList.remove('active'));
       if (type === 'login') {
@@ -756,29 +817,37 @@
         document.getElementById('tabSignup').classList.add('active');
         document.getElementById('authSubmitBtn').innerText = 'Create Account';
       }
-    }
+    };
 
-    function handleAuth(e) {
+    window.handleAuth = async function(e) {
       e.preventDefault();
       const emailInput = document.getElementById('authEmail').value.trim();
       const passInput = document.getElementById('authPassword').value;
 
-      if (emailInput) profileState.email = emailInput;
-      if (passInput) profileState.password = passInput;
+      try {
+        if (authMode === 'signup') {
+          const userCred = await createUserWithEmailAndPassword(auth, emailInput, passInput);
+          profileState.email = userCred.user.email;
+          await setDoc(doc(db, "users", userCred.user.uid), { profile: profileState, colleges: selectedColleges });
+        } else {
+          await signInWithEmailAndPassword(auth, emailInput, passInput);
+        }
+      } catch (error) {
+        alert("Authentication Error: " + error.message);
+      }
+    };
 
-      localStorage.setItem('apex_v5_profile', JSON.stringify(profileState));
-      document.getElementById('authOverlay').style.display = 'none';
-      switchView('dashboard');
-    }
-
-    function handleLogout() {
-      document.getElementById('authOverlay').style.display = 'flex';
-      if (document.getElementById('drawer').classList.contains('active')) toggleDrawer();
-    }
+    window.handleLogout = async function() {
+      try {
+        await signOut(auth);
+        if (document.getElementById('drawer').classList.contains('active')) toggleDrawer();
+      } catch (err) {
+        console.error("Sign out error", err);
+      }
+    };
 
     // ACCURATE HOLISTIC CLASSIFICATION ALGORITHM
     function calculateUniversityOdds(uni) {
-      // 1. GPA Weight (35%)
       const gpaDiff = profileState.gpa - uni.avgGpa;
       let gpaScore = 30;
       if (gpaDiff >= 0.05) gpaScore = 35;
@@ -787,8 +856,7 @@
       else if (gpaDiff >= -0.2) gpaScore = 18;
       else gpaScore = 10;
 
-      // 2. Testing Weight (30%) - Compare to 25th-75th Percentiles
-      let testScore = 20; // baseline if test optional
+      let testScore = 20; 
       if (profileState.satOption === 'score' && profileState.sat) {
         if (profileState.sat >= uni.sat75) testScore = 30;
         else if (profileState.sat >= (uni.sat25 + uni.sat75) / 2) testScore = 25;
@@ -796,7 +864,6 @@
         else testScore = 8;
       }
 
-      // 3. Extracurriculars Weight (20%)
       let ecScore = 0;
       profileState.activities.forEach(a => {
         if (a.tier === '1') ecScore += 7;
@@ -805,20 +872,15 @@
       });
       ecScore = Math.min(20, ecScore);
 
-      // 4. Curriculum Rigor (15%)
       const rigorScore = (parseInt(profileState.rigor) / 5) * 15;
+      const rawHolisticScore = gpaScore + testScore + ecScore + rigorScore;
 
-      const rawHolisticScore = gpaScore + testScore + ecScore + rigorScore; // Max ~100
-
-      // Calculate final odds based on baseline acceptance rate and student score
       let odds = Math.round((rawHolisticScore / 100) * (uni.acceptRate * 2.8));
       odds = Math.min(95, Math.max(2, odds));
 
-      // Rigorous Classification Rules
       let category = "Target";
       let badgeClass = "badge-target";
 
-      // Super selective schools (<10% Acceptance Rate) are ALWAYS Reach unless exceptionally qualified
       if (uni.acceptRate < 10) {
         category = "Reach";
         badgeClass = "badge-reach";
@@ -836,8 +898,7 @@
       return { odds, category, badgeClass };
     }
 
-    // SEARCH & FILTER ENGINE WITH ALL REQUIRED EXPLICIT FILTERS AND TOP STACKING
-    function handleFilteredSearch() {
+    window.handleFilteredSearch = function() {
       const resultsContainer = document.getElementById('searchResults');
       const query = document.getElementById('collegeSearchInput').value.trim().toLowerCase();
       
@@ -855,8 +916,6 @@
         const matchesQuery = !query || uni.name.toLowerCase().includes(query) || uni.location.toLowerCase().includes(query);
         const matchesType = typeFilter === 'all' || uni.type === typeFilter;
         const matchesPolicy = policyFilter === 'all' || uni.policy === policyFilter;
-        
-        // Filter by MAX Financial Aid Cap (Percentage receiving aid <= max limit selected)
         const matchesAid = uni.finAidPercent <= maxAidFilter;
 
         const oddsRes = calculateUniversityOdds(uni);
@@ -896,23 +955,35 @@
         });
       }
       resultsContainer.classList.add('active');
+    };
+
+    async function persistUserData() {
+      if (!currentUserUid) return;
+      try {
+        await setDoc(doc(db, "users", currentUserUid), {
+          profile: profileState,
+          colleges: selectedColleges
+        }, { merge: true });
+      } catch (err) {
+        console.error("Error saving data to Firebase:", err);
+      }
     }
 
-    function addCollege(name) {
+    window.addCollege = async function(name) {
       if (!selectedColleges.some(c => c.name === name)) {
         selectedColleges.push({ name: name, status: "Not Started", outcome: "Awaiting Feedback" });
-        localStorage.setItem('apex_v5_colleges', JSON.stringify(selectedColleges));
+        await persistUserData();
         renderAll();
       }
       document.getElementById('collegeSearchInput').value = '';
       document.getElementById('searchResults').classList.remove('active');
-    }
+    };
 
-    function removeCollege(name) {
+    window.removeCollege = async function(name) {
       selectedColleges = selectedColleges.filter(c => c.name !== name);
-      localStorage.setItem('apex_v5_colleges', JSON.stringify(selectedColleges));
+      await persistUserData();
       renderAll();
-    }
+    };
 
     function populateCDSSchoolSelect() {
       const select = document.getElementById('cdsSelectSchool');
@@ -927,7 +998,7 @@
       runCDSComparison();
     }
 
-    function runCDSComparison() {
+    window.runCDSComparison = function() {
       const select = document.getElementById('cdsSelectSchool');
       if(!select) return;
       const selectedName = select.value;
@@ -962,9 +1033,9 @@
           </div>
         </div>
       `;
-    }
+    };
 
-    async function evaluateLORWithAI() {
+    window.evaluateLORWithAI = async function() {
       const text = document.getElementById('lorText').value.trim();
       const resBox = document.getElementById('lorResultBox');
       const resText = document.getElementById('lorResultText');
@@ -999,7 +1070,7 @@
         resText.innerText = "Local Evaluation: Strong recommendation letter demonstrating solid engagement and leadership qualities. Score: 4.5/5.0";
         profileState.lorScore = 4.5;
       }
-    }
+    };
 
     function renderActivities() {
       const container = document.getElementById('activitiesList');
@@ -1032,18 +1103,17 @@
       if(addBtn) addBtn.style.display = profileState.activities.length >= 10 ? 'none' : 'inline-flex';
     }
 
-    function addActivity() { if(profileState.activities.length < 10) { profileState.activities.push({title:'', org:'', description:'', tier:'3'}); renderActivities(); } }
-    function removeActivity(idx) { profileState.activities.splice(idx, 1); renderActivities(); }
-    function updateActivity(idx, field, val) { profileState.activities[idx][field] = val; }
+    window.addActivity = function() { if(profileState.activities.length < 10) { profileState.activities.push({title:'', org:'', description:'', tier:'3'}); renderActivities(); } };
+    window.removeActivity = function(idx) { profileState.activities.splice(idx, 1); renderActivities(); };
+    window.updateActivity = function(idx, field, val) { profileState.activities[idx][field] = val; };
 
-    function toggleTestInput(type) {
+    window.toggleTestInput = function(type) {
       if(type === 'sat') document.getElementById('satScoreGroup').style.display = document.getElementById('profSatOption').value === 'score' ? 'flex' : 'none';
       else document.getElementById('actScoreGroup').style.display = document.getElementById('profActOption').value === 'score' ? 'flex' : 'none';
-    }
+    };
 
     function renderAll() {
-      if(document.getElementById('profEmail')) document.getElementById('profEmail').value = profileState.email || 'student@school.edu';
-      if(document.getElementById('profPassword')) document.getElementById('profPassword').value = profileState.password || '';
+      if(document.getElementById('profEmail')) document.getElementById('profEmail').value = profileState.email || '';
       if(document.getElementById('profGpa')) document.getElementById('profGpa').value = profileState.gpa;
       if(document.getElementById('profRigor')) document.getElementById('profRigor').value = profileState.rigor;
       if(document.getElementById('profSatOption')) document.getElementById('profSatOption').value = profileState.satOption;
@@ -1134,20 +1204,26 @@
       }
     }
 
-    function updateCollegeStatus(name, val) {
+    window.updateCollegeStatus = async function(name, val) {
       const col = selectedColleges.find(c => c.name === name);
-      if(col) { col.status = val; localStorage.setItem('apex_v5_colleges', JSON.stringify(selectedColleges)); renderAll(); }
-    }
+      if(col) { 
+        col.status = val; 
+        await persistUserData(); 
+        renderAll(); 
+      }
+    };
 
-    function updateCollegeOutcome(name, val) {
+    window.updateCollegeOutcome = async function(name, val) {
       const col = selectedColleges.find(c => c.name === name);
-      if(col) { col.outcome = val; localStorage.setItem('apex_v5_colleges', JSON.stringify(selectedColleges)); renderAll(); }
-    }
+      if(col) { 
+        col.outcome = val; 
+        await persistUserData(); 
+        renderAll(); 
+      }
+    };
 
-    function saveProfile(e) {
+    window.saveProfile = async function(e) {
       e.preventDefault();
-      profileState.email = document.getElementById('profEmail').value.trim();
-      profileState.password = document.getElementById('profPassword').value;
       profileState.gpa = parseFloat(document.getElementById('profGpa').value);
       profileState.rigor = document.getElementById('profRigor').value;
       profileState.satOption = document.getElementById('profSatOption').value;
@@ -1156,12 +1232,10 @@
       profileState.act = document.getElementById('profAct').value ? parseInt(document.getElementById('profAct').value) : null;
       profileState.lorText = document.getElementById('lorText').value;
 
-      localStorage.setItem('apex_v5_profile', JSON.stringify(profileState));
-      alert("Profile and account login details successfully saved!");
+      await persistUserData();
+      alert("Profile and college list successfully saved to your private Firebase cloud account!");
       renderAll();
-    }
-
-    renderAll();
+    };
   </script>
 </body>
 </html>
