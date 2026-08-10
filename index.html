@@ -7,27 +7,38 @@
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
   <style>
     :root {
-      --bg-dark: #090d16;
-      --bg-card: rgba(22, 30, 46, 0.75);
+      --bg-dark: #07090e;
+      --bg-card: rgba(18, 25, 38, 0.65);
+      --bg-card-hover: rgba(26, 36, 56, 0.75);
       --bg-card-border: rgba(255, 255, 255, 0.08);
+      --bg-card-border-glow: rgba(99, 102, 241, 0.35);
       --primary: #6366f1;
       --primary-hover: #4f46e5;
-      --primary-glow: rgba(99, 102, 241, 0.25);
+      --primary-glow: rgba(99, 102, 241, 0.35);
+      --accent-cyan: #06b6d4;
       --success: #10b981;
       --warning: #f59e0b;
       --danger: #ef4444;
       --text-main: #f8fafc;
       --text-muted: #94a3b8;
       --text-subtle: #64748b;
+      --radius-xl: 20px;
       --radius-lg: 16px;
-      --radius-md: 10px;
-      --radius-sm: 6px;
-      --glass-bg: rgba(15, 23, 42, 0.85);
+      --radius-md: 12px;
+      --radius-sm: 8px;
+      --glass-bg: rgba(11, 15, 25, 0.82);
       --glass-border: rgba(255, 255, 255, 0.1);
-      --transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+      --transition-smooth: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      --shadow-premium: 0 20px 40px -15px rgba(0, 0, 0, 0.6), 0 0 1px 1px rgba(255, 255, 255, 0.05);
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Plus Jakarta Sans', sans-serif; }
+
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar { width: 8px; height: 8px; }
+    ::-webkit-scrollbar-track { background: var(--bg-dark); }
+    ::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.15); border-radius: 4px; }
+    ::-webkit-scrollbar-thumb:hover { background: var(--primary); }
 
     body {
       background-color: var(--bg-dark);
@@ -37,147 +48,184 @@
       flex-direction: column;
       overflow-x: hidden;
       background-image: 
-        radial-gradient(circle at 10% 20%, rgba(99, 102, 241, 0.08) 0%, transparent 40%),
-        radial-gradient(circle at 90% 80%, rgba(16, 185, 129, 0.05) 0%, transparent 40%);
+        radial-gradient(circle at 15% 15%, rgba(99, 102, 241, 0.12) 0%, transparent 45%),
+        radial-gradient(circle at 85% 85%, rgba(6, 182, 212, 0.08) 0%, transparent 45%),
+        radial-gradient(circle at 50% 50%, rgba(16, 185, 129, 0.04) 0%, transparent 60%);
+      background-attachment: fixed;
     }
 
     /* Auth Overlay */
     .auth-container {
-      position: fixed; inset: 0; background: var(--bg-dark); z-index: 1000;
-      display: flex; align-items: center; justify-content: center; padding: 20px;
+      position: fixed; inset: 0; background: rgba(7, 9, 14, 0.95); backdrop-filter: blur(25px); z-index: 1000;
+      display: flex; align-items: center; justify-content: center; padding: 20px; transition: var(--transition-smooth);
     }
     .auth-card {
-      background: var(--bg-card); border: 1px solid var(--bg-card-border);
-      backdrop-filter: blur(20px); border-radius: var(--radius-lg); width: 100%; max-width: 440px; padding: 40px;
-      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.6);
+      background: var(--bg-card); border: 1px solid var(--glass-border);
+      backdrop-filter: blur(30px); border-radius: var(--radius-xl); width: 100%; max-width: 440px; padding: 44px;
+      box-shadow: 0 30px 60px -12px rgba(0, 0, 0, 0.75), 0 0 30px rgba(99, 102, 241, 0.15);
+      position: relative; overflow: hidden;
+    }
+    .auth-card::before {
+      content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+      background: linear-gradient(90deg, var(--primary), var(--accent-cyan));
     }
     .auth-header { text-align: center; margin-bottom: 32px; }
     .auth-header h2 {
-      font-size: 1.8rem; font-weight: 800;
-      background: linear-gradient(135deg, #fff 0%, #a5b4fc 100%);
+      font-size: 2rem; font-weight: 800; letter-spacing: -0.02em;
+      background: linear-gradient(135deg, #ffffff 20%, #a5b4fc 100%);
       -webkit-background-clip: text; -webkit-text-fill-color: transparent;
     }
-    .auth-tabs { display: flex; background: rgba(0, 0, 0, 0.3); padding: 4px; border-radius: var(--radius-md); margin-bottom: 24px; }
+    .auth-header p { font-size: 0.875rem; color: var(--text-muted); margin-top: 6px; }
+    .auth-tabs { display: flex; background: rgba(0, 0, 0, 0.4); padding: 4px; border-radius: var(--radius-md); margin-bottom: 24px; border: 1px solid rgba(255,255,255,0.05); }
     .auth-tab {
-      flex: 1; padding: 10px; text-align: center; background: transparent; border: none;
+      flex: 1; padding: 12px; text-align: center; background: transparent; border: none;
       color: var(--text-muted); font-weight: 600; font-size: 0.85rem; cursor: pointer; border-radius: var(--radius-sm);
+      transition: var(--transition-smooth);
     }
-    .auth-tab.active { background: var(--primary); color: #fff; }
+    .auth-tab.active { background: var(--primary); color: #fff; box-shadow: 0 4px 12px var(--primary-glow); }
 
     /* Header & Navigation */
     .app-header {
-      display: flex; justify-content: space-between; align-items: center; padding: 16px 32px;
-      background: var(--glass-bg); backdrop-filter: blur(12px); border-bottom: 1px solid var(--glass-border);
-      position: sticky; top: 0; z-index: 100;
+      display: flex; justify-content: space-between; align-items: center; padding: 18px 40px;
+      background: var(--glass-bg); backdrop-filter: blur(20px); border-bottom: 1px solid var(--glass-border);
+      position: sticky; top: 0; z-index: 100; box-shadow: 0 10px 30px rgba(0,0,0,0.3);
     }
-    .brand { display: flex; align-items: center; gap: 12px; }
+    .brand { display: flex; align-items: center; gap: 14px; cursor: pointer; }
     .brand-logo {
-      width: 36px; height: 36px; background: linear-gradient(135deg, var(--primary), #818cf8);
-      border-radius: 10px; display: flex; align-items: center; justify-content: center; font-weight: 800; color: white;
-      box-shadow: 0 0 15px var(--primary-glow);
+      width: 40px; height: 40px; background: linear-gradient(135deg, var(--primary), var(--accent-cyan));
+      border-radius: var(--radius-md); display: flex; align-items: center; justify-content: center; font-weight: 800; color: white;
+      box-shadow: 0 0 20px var(--primary-glow); font-size: 1.1rem;
     }
-    .brand-title { font-weight: 700; font-size: 1.25rem; letter-spacing: -0.01em; color: var(--text-main); }
+    .brand-title { font-weight: 800; font-size: 1.35rem; letter-spacing: -0.02em; color: var(--text-main); }
     .hamburger-btn {
-      background: rgba(255, 255, 255, 0.05); border: 1px solid var(--glass-border); color: var(--text-main);
-      width: 42px; height: 42px; border-radius: var(--radius-md); cursor: pointer;
+      background: rgba(255, 255, 255, 0.04); border: 1px solid var(--glass-border); color: var(--text-main);
+      width: 44px; height: 44px; border-radius: var(--radius-md); cursor: pointer;
       display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 5px;
+      transition: var(--transition-smooth);
     }
-    .hamburger-btn span { width: 20px; height: 2px; background-color: var(--text-main); }
+    .hamburger-btn:hover { background: rgba(255, 255, 255, 0.1); border-color: rgba(255, 255, 255, 0.2); transform: scale(1.03); }
+    .hamburger-btn span { width: 22px; height: 2px; background-color: var(--text-main); border-radius: 2px; transition: var(--transition-smooth); }
 
     /* Drawer */
     .drawer-overlay {
-      position: fixed; inset: 0; background: rgba(0,0,0,0.6); backdrop-filter: blur(4px); z-index: 200;
-      opacity: 0; pointer-events: none; transition: var(--transition);
+      position: fixed; inset: 0; background: rgba(0,0,0,0.7); backdrop-filter: blur(8px); z-index: 200;
+      opacity: 0; pointer-events: none; transition: var(--transition-smooth);
     }
     .drawer-overlay.active { opacity: 1; pointer-events: auto; }
     .drawer {
-      position: fixed; top: 0; right: -320px; width: 320px; height: 100%;
-      background: var(--bg-dark); border-left: 1px solid var(--glass-border); z-index: 201;
-      padding: 32px 24px; display: flex; flex-direction: column; transition: var(--transition);
+      position: fixed; top: 0; right: -340px; width: 340px; height: 100%;
+      background: rgba(11, 15, 25, 0.95); border-left: 1px solid var(--glass-border); z-index: 201;
+      padding: 36px 28px; display: flex; flex-direction: column; transition: var(--transition-smooth);
+      backdrop-filter: blur(30px); box-shadow: -20px 0 50px rgba(0,0,0,0.8);
     }
     .drawer.active { right: 0; }
-    .drawer-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 40px; }
-    .close-btn { background: none; border: none; color: var(--text-muted); font-size: 1.5rem; cursor: pointer; }
-    .drawer-nav { display: flex; flex-direction: column; gap: 12px; flex: 1; }
+    .drawer-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 36px; }
+    .close-btn { background: rgba(255,255,255,0.05); border: 1px solid var(--glass-border); color: var(--text-muted); font-size: 1.25rem; width: 36px; height: 36px; border-radius: 50%; cursor: pointer; transition: var(--transition-smooth); }
+    .close-btn:hover { color: #fff; background: rgba(255,255,255,0.15); }
+    .drawer-nav { display: flex; flex-direction: column; gap: 10px; flex: 1; }
     .nav-item {
-      display: flex; align-items: center; gap: 14px; padding: 14px 18px; color: var(--text-muted);
-      border-radius: var(--radius-md); font-weight: 600; font-size: 0.95rem; cursor: pointer; transition: var(--transition);
+      display: flex; align-items: center; gap: 14px; padding: 14px 20px; color: var(--text-muted);
+      border-radius: var(--radius-md); font-weight: 600; font-size: 0.95rem; cursor: pointer; transition: var(--transition-smooth);
+      border: 1px solid transparent;
     }
-    .nav-item:hover, .nav-item.active { background: rgba(99, 102, 241, 0.15); color: #fff; }
-    .nav-item.logout { margin-top: auto; color: #f87171; background: rgba(239, 68, 68, 0.1); }
+    .nav-item:hover { background: rgba(255, 255, 255, 0.05); color: #fff; transform: translateX(-4px); }
+    .nav-item.active { background: linear-gradient(135deg, rgba(99, 102, 241, 0.2), rgba(6, 182, 212, 0.1)); color: #fff; border-color: rgba(99, 102, 241, 0.4); box-shadow: 0 4px 20px rgba(0,0,0,0.3); }
+    .nav-item.logout { margin-top: auto; color: #f87171; background: rgba(239, 68, 68, 0.08); border-color: rgba(239, 68, 68, 0.2); }
+    .nav-item.logout:hover { background: rgba(239, 68, 68, 0.18); color: #fff; }
 
     /* Layout & Cards */
-    .main-container { max-width: 1300px; margin: 0 auto; padding: 32px 24px; width: 100%; flex: 1; }
-    .view-panel { display: none; }
+    .main-container { max-width: 1380px; margin: 0 auto; padding: 40px 32px; width: 100%; flex: 1; }
+    .view-panel { display: none; animation: fadeIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
     .view-panel.active { display: block; }
-    .card {
-      background: var(--bg-card); border: 1px solid var(--bg-card-border); border-radius: var(--radius-lg);
-      padding: 28px; margin-bottom: 24px; backdrop-filter: blur(10px); position: relative;
+    
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(12px); }
+      to { opacity: 1; transform: translateY(0); }
     }
-    .card-title { font-size: 1.25rem; font-weight: 700; margin-bottom: 6px; }
-    .card-subtitle { color: var(--text-muted); font-size: 0.875rem; margin-bottom: 24px; }
+
+    .card {
+      background: var(--bg-card); border: 1px solid var(--bg-card-border); border-radius: var(--radius-xl);
+      padding: 32px; margin-bottom: 28px; backdrop-filter: blur(20px); position: relative;
+      box-shadow: var(--shadow-premium); transition: var(--transition-smooth); overflow: hidden;
+    }
+    .card:hover { border-color: rgba(255, 255, 255, 0.15); }
+    .card-title { font-size: 1.35rem; font-weight: 800; margin-bottom: 6px; letter-spacing: -0.01em; }
+    .card-subtitle { color: var(--text-muted); font-size: 0.9rem; margin-bottom: 28px; line-height: 1.5; }
 
     /* Forms & Controls */
-    .form-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 20px; }
+    .form-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 24px; }
     .form-group { display: flex; flex-direction: column; gap: 8px; }
     .form-group.full-width { grid-column: 1 / -1; }
-    label { font-size: 0.825rem; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.03em; }
+    label { font-size: 0.8rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em; }
     .form-control {
-      background: rgba(9, 13, 22, 0.6); border: 1px solid var(--glass-border); border-radius: var(--radius-md);
-      padding: 12px 16px; color: var(--text-main); font-size: 0.95rem; outline: none; width: 100%; transition: var(--transition);
+      background: rgba(7, 9, 14, 0.7); border: 1px solid var(--glass-border); border-radius: var(--radius-md);
+      padding: 14px 18px; color: var(--text-main); font-size: 0.95rem; outline: none; width: 100%; transition: var(--transition-smooth);
     }
-    .form-control:focus { border-color: var(--primary); box-shadow: 0 0 0 3px var(--primary-glow); }
+    .form-control:focus { border-color: var(--primary); box-shadow: 0 0 0 4px var(--primary-glow); background: rgba(7, 9, 14, 0.9); }
     select.form-control {
       appearance: none;
       background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2394a3b8' stroke-width='2'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
-      background-repeat: no-repeat; background-position: right 1rem center; background-size: 1.1em; padding-right: 2.5rem;
+      background-repeat: no-repeat; background-position: right 1.2rem center; background-size: 1.1em; padding-right: 2.8rem;
     }
-    textarea.form-control { resize: vertical; min-height: 120px; }
+    textarea.form-control { resize: vertical; min-height: 130px; line-height: 1.6; }
     .btn {
-      background: var(--primary); color: white; border: none; padding: 12px 24px; border-radius: var(--radius-md);
-      font-weight: 600; font-size: 0.95rem; cursor: pointer; transition: var(--transition);
-      display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+      background: linear-gradient(135deg, var(--primary), var(--primary-hover)); color: white; border: none; padding: 14px 28px; border-radius: var(--radius-md);
+      font-weight: 700; font-size: 0.95rem; cursor: pointer; transition: var(--transition-smooth);
+      display: inline-flex; align-items: center; justify-content: center; gap: 10px;
+      box-shadow: 0 8px 20px var(--primary-glow);
     }
-    .btn:hover { background: var(--primary-hover); transform: translateY(-1px); }
-    .btn-secondary { background: rgba(255, 255, 255, 0.08); color: var(--text-main); }
-    .btn-secondary:hover { background: rgba(255, 255, 255, 0.15); }
+    .btn:hover { transform: translateY(-2px); box-shadow: 0 12px 25px var(--primary-glow); background: linear-gradient(135deg, #7073f3, var(--primary)); }
+    .btn:active { transform: translateY(0); }
+    .btn-secondary { background: rgba(255, 255, 255, 0.06); color: var(--text-main); border: 1px solid var(--glass-border); box-shadow: none; }
+    .btn-secondary:hover { background: rgba(255, 255, 255, 0.12); border-color: rgba(255, 255, 255, 0.2); box-shadow: 0 6px 15px rgba(0,0,0,0.2); }
 
     /* Search Container Stack Elevation */
     .search-card-container { position: relative; z-index: 50; }
     .search-box { position: relative; }
     .search-results {
-      position: absolute; top: 100%; left: 0; right: 0; background: #0f172a; border: 1px solid var(--glass-border);
-      border-radius: var(--radius-md); margin-top: 6px; max-height: 360px; overflow-y: auto; z-index: 9999;
-      box-shadow: 0 20px 40px rgba(0,0,0,0.85); display: none;
+      position: absolute; top: calc(100% + 8px); left: 0; right: 0; background: rgba(15, 23, 42, 0.95); border: 1px solid var(--glass-border);
+      border-radius: var(--radius-lg); max-height: 380px; overflow-y: auto; z-index: 9999;
+      box-shadow: 0 25px 60px rgba(0,0,0,0.9), 0 0 20px rgba(99, 102, 241, 0.2); display: none; backdrop-filter: blur(25px);
     }
-    .search-results.active { display: block; }
-    .search-item { padding: 14px 18px; cursor: pointer; border-bottom: 1px solid var(--glass-border); transition: var(--transition); }
-    .search-item:hover { background: rgba(99, 102, 241, 0.2); }
+    .search-results.active { display: block; animation: fadeIn 0.2s ease-out; }
+    .search-item { padding: 16px 20px; cursor: pointer; border-bottom: 1px solid var(--glass-border); transition: var(--transition-smooth); }
+    .search-item:last-child { border-bottom: none; }
+    .search-item:hover { background: rgba(99, 102, 241, 0.18); }
 
     /* Comparison Box */
     .cds-comparison-grid {
-      display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; margin-top: 16px;
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 18px; margin-top: 20px;
     }
     .cds-metric-card {
-      background: rgba(9, 13, 22, 0.5); border: 1px solid var(--glass-border); border-radius: var(--radius-md); padding: 16px;
+      background: rgba(7, 9, 14, 0.5); border: 1px solid var(--glass-border); border-radius: var(--radius-md); padding: 20px;
+      transition: var(--transition-smooth);
     }
-    .cds-metric-title { font-size: 0.75rem; color: var(--text-muted); font-weight: 600; text-transform: uppercase; }
-    .cds-metric-val { font-size: 1.1rem; font-weight: 700; margin-top: 6px; color: #a5b4fc; }
+    .cds-metric-card:hover { border-color: rgba(99, 102, 241, 0.4); transform: translateY(-2px); }
+    .cds-metric-title { font-size: 0.75rem; color: var(--text-muted); font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; }
+    .cds-metric-val { font-size: 1.2rem; font-weight: 800; margin-top: 8px; color: #a5b4fc; }
 
     /* Tables & Stats */
-    .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 20px; margin-bottom: 28px; }
-    .stat-card { background: var(--bg-card); border: 1px solid var(--bg-card-border); border-radius: var(--radius-lg); padding: 24px; position: relative; }
-    .stat-card::before { content: ''; position: absolute; top: 0; left: 0; width: 4px; height: 100%; background: var(--stat-color); }
-    .stat-value { font-size: 2.25rem; font-weight: 800; margin-top: 8px; }
-    .table-container { overflow-x: auto; border-radius: var(--radius-md); border: 1px solid var(--glass-border); z-index: 1; }
+    .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 24px; margin-bottom: 32px; }
+    .stat-card {
+      background: var(--bg-card); border: 1px solid var(--bg-card-border); border-radius: var(--radius-xl); padding: 28px; position: relative;
+      box-shadow: var(--shadow-premium); backdrop-filter: blur(20px); transition: var(--transition-smooth); overflow: hidden;
+    }
+    .stat-card:hover { transform: translateY(-4px); border-color: rgba(255,255,255,0.18); }
+    .stat-card::before { content: ''; position: absolute; top: 0; left: 0; width: 5px; height: 100%; background: var(--stat-color); }
+    .stat-value { font-size: 2.5rem; font-weight: 800; margin-top: 10px; letter-spacing: -0.02em; }
+    
+    .table-container { overflow-x: auto; border-radius: var(--radius-lg); border: 1px solid var(--glass-border); z-index: 1; background: rgba(7, 9, 14, 0.4); }
     table { width: 100%; border-collapse: collapse; text-align: left; }
-    th { background: rgba(9, 13, 22, 0.8); padding: 16px 20px; font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; }
-    td { padding: 18px 20px; border-bottom: 1px solid var(--glass-border); font-size: 0.9rem; background: rgba(22, 30, 46, 0.4); }
-    .badge { padding: 4px 10px; border-radius: 20px; font-size: 0.75rem; font-weight: 700; }
-    .badge-safety { background: rgba(16, 185, 129, 0.15); color: #34d399; border: 1px solid rgba(16, 185, 129, 0.3); }
-    .badge-target { background: rgba(245, 158, 11, 0.15); color: #fbbf24; border: 1px solid rgba(245, 158, 11, 0.3); }
-    .badge-reach  { background: rgba(239, 68, 68, 0.15); color: #f87171; border: 1px solid rgba(239, 68, 68, 0.3); }
-    .activity-card { background: rgba(9, 13, 22, 0.4); border: 1px solid var(--glass-border); border-radius: var(--radius-md); padding: 16px; margin-bottom: 16px; }
+    th { background: rgba(11, 15, 25, 0.9); padding: 18px 24px; font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.08em; font-weight: 700; border-bottom: 1px solid var(--glass-border); }
+    td { padding: 20px 24px; border-bottom: 1px solid var(--glass-border); font-size: 0.92rem; transition: var(--transition-smooth); }
+    tr:last-child td { border-bottom: none; }
+    tr:hover td { background: rgba(255, 255, 255, 0.03); }
+    .badge { padding: 6px 14px; border-radius: 30px; font-size: 0.75rem; font-weight: 800; letter-spacing: 0.03em; display: inline-block; }
+    .badge-safety { background: rgba(16, 185, 129, 0.15); color: #34d399; border: 1px solid rgba(16, 185, 129, 0.35); box-shadow: 0 0 12px rgba(16, 185, 129, 0.15); }
+    .badge-target { background: rgba(245, 158, 11, 0.15); color: #fbbf24; border: 1px solid rgba(245, 158, 11, 0.35); box-shadow: 0 0 12px rgba(245, 158, 11, 0.15); }
+    .badge-reach  { background: rgba(239, 68, 68, 0.15); color: #f87171; border: 1px solid rgba(239, 68, 68, 0.35); box-shadow: 0 0 12px rgba(239, 68, 68, 0.15); }
+    .activity-card { background: rgba(7, 9, 14, 0.5); border: 1px solid var(--glass-border); border-radius: var(--radius-lg); padding: 20px; margin-bottom: 20px; transition: var(--transition-smooth); }
+    .activity-card:hover { border-color: rgba(99, 102, 241, 0.3); }
   </style>
 </head>
 <body>
@@ -193,11 +241,11 @@
         <button class="auth-tab" onclick="switchAuthTab('signup')">Create Account</button>
       </div>
       <form onsubmit="handleAuth(event)">
-        <div class="form-group" style="margin-bottom: 16px;">
+        <div class="form-group" style="margin-bottom: 18px;">
           <label>Email Address</label>
           <input type="email" class="form-control" id="authEmail" placeholder="student@school.edu" required>
         </div>
-        <div class="form-group" style="margin-bottom: 24px;">
+        <div class="form-group" style="margin-bottom: 28px;">
           <label>Password</label>
           <input type="password" class="form-control" placeholder="••••••••" required>
         </div>
@@ -207,7 +255,7 @@
   </div>
 
   <header class="app-header">
-    <div class="brand">
+    <div class="brand" onclick="switchView('dashboard')">
       <div class="brand-logo">A</div>
       <div class="brand-title" id="appHeaderTitle">ApexApply | Dashboard</div>
     </div>
@@ -219,18 +267,60 @@
   <div class="drawer-overlay" id="drawerOverlay" onclick="toggleDrawer()"></div>
   <div class="drawer" id="drawer">
     <div class="drawer-header">
-      <div style="font-weight: 700; color: var(--text-muted); font-size: 0.85rem; text-transform: uppercase;">Menu Navigation</div>
+      <div style="font-weight: 800; color: var(--text-muted); font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.08em;">Navigation Menu</div>
       <button class="close-btn" onclick="toggleDrawer()">&times;</button>
     </div>
     <div class="drawer-nav">
-      <a class="nav-item" id="nav-profile" onclick="switchView('profile')">👤 Student Profile</a>
       <a class="nav-item active" id="nav-dashboard" onclick="switchView('dashboard')">📊 Dashboard</a>
+      <a class="nav-item" id="nav-profile" onclick="switchView('profile')">👤 Student Profile</a>
       <a class="nav-item" id="nav-colleges" onclick="switchView('colleges')">🏛️ My Colleges</a>
       <a class="nav-item logout" onclick="handleLogout()">🚪 Log Out</a>
     </div>
   </div>
 
   <main class="main-container">
+
+    <section class="view-panel active" id="view-dashboard">
+      <div class="stats-grid">
+        <div class="stat-card" style="--stat-color: #6366f1;">
+          <div style="font-size: 0.8rem; color: var(--text-muted); font-weight: 700; letter-spacing:0.05em;">TOTAL SELECTED</div>
+          <div class="stat-value" id="statTotal">0</div>
+        </div>
+        <div class="stat-card" style="--stat-color: #10b981;">
+          <div style="font-size: 0.8rem; color: var(--text-muted); font-weight: 700; letter-spacing:0.05em;">SAFETY SCHOOLS</div>
+          <div class="stat-value" id="statSafety" style="color: #34d399;">0</div>
+        </div>
+        <div class="stat-card" style="--stat-color: #f59e0b;">
+          <div style="font-size: 0.8rem; color: var(--text-muted); font-weight: 700; letter-spacing:0.05em;">TARGET SCHOOLS</div>
+          <div class="stat-value" id="statTarget" style="color: #fbbf24;">0</div>
+        </div>
+        <div class="stat-card" style="--stat-color: #ef4444;">
+          <div style="font-size: 0.8rem; color: var(--text-muted); font-weight: 700; letter-spacing:0.05em;">REACH SCHOOLS</div>
+          <div class="stat-value" id="statReach" style="color: #f87171;">0</div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">📋 College Portfolio Overview</div>
+        <div class="card-subtitle">Real-time holistic evaluation and status tracking across your college list.</div>
+        <div class="table-container">
+          <table>
+            <thead>
+              <tr>
+                <th>University Name</th>
+                <th>Type / Location</th>
+                <th>CDS Financial Aid %</th>
+                <th>Evaluated Odds</th>
+                <th>Category</th>
+                <th>Application Status</th>
+                <th>Decision Outcome</th>
+              </tr>
+            </thead>
+            <tbody id="dashboardTableBody"></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
 
     <section class="view-panel" id="view-profile">
       <div class="card">
@@ -281,20 +371,20 @@
             </div>
 
             <div class="form-group full-width" style="margin-top: 10px;">
-              <div class="card-title" style="font-size: 1.1rem;">🎨 Common App Extracurricular Activities (Max 10)</div>
+              <div class="card-title" style="font-size: 1.15rem;">🎨 Common App Extracurricular Activities (Max 10)</div>
               <div id="activitiesList"></div>
               <button type="button" class="btn btn-secondary" onclick="addActivity()" id="addActivityBtn">+ Add Activity</button>
             </div>
 
             <div class="form-group full-width" style="margin-top: 20px;">
-              <div class="card-title" style="font-size: 1.1rem;">📄 Recommendation Letter (LOR) AI Evaluator</div>
+              <div class="card-title" style="font-size: 1.15rem;">📄 Recommendation Letter (LOR) AI Evaluator</div>
               <textarea class="form-control" id="lorText" placeholder="Paste letter of recommendation content here..."></textarea>
-              <div style="margin-top: 12px;">
+              <div style="margin-top: 14px;">
                 <button type="button" class="btn btn-secondary" onclick="evaluateLORWithAI()">🤖 Evaluate LOR Strength with AI</button>
               </div>
-              <div style="background: rgba(99,102,241,0.1); border: 1px solid var(--primary); border-radius: var(--radius-md); padding: 16px; margin-top: 16px; display: none;" id="lorResultBox">
-                <h4 style="color: #a5b4fc; margin-bottom: 6px;">AI Evaluation Feedback</h4>
-                <p id="lorResultText" style="font-size: 0.9rem; line-height: 1.5;"></p>
+              <div style="background: rgba(99,102,241,0.08); border: 1px solid var(--primary); border-radius: var(--radius-md); padding: 18px; margin-top: 18px; display: none;" id="lorResultBox">
+                <h4 style="color: #a5b4fc; margin-bottom: 8px; font-weight: 700;">AI Evaluation Feedback</h4>
+                <p id="lorResultText" style="font-size: 0.92rem; line-height: 1.6; color: var(--text-main);"></p>
               </div>
             </div>
 
@@ -320,53 +410,12 @@
       </div>
     </section>
 
-    <section class="view-panel active" id="view-dashboard">
-      <div class="stats-grid">
-        <div class="stat-card" style="--stat-color: #6366f1;">
-          <div style="font-size: 0.8rem; color: var(--text-muted); font-weight: 600;">TOTAL SELECTED</div>
-          <div class="stat-value" id="statTotal">0</div>
-        </div>
-        <div class="stat-card" style="--stat-color: #10b981;">
-          <div style="font-size: 0.8rem; color: var(--text-muted); font-weight: 600;">SAFETY SCHOOLS</div>
-          <div class="stat-value" id="statSafety" style="color: #34d399;">0</div>
-        </div>
-        <div class="stat-card" style="--stat-color: #f59e0b;">
-          <div style="font-size: 0.8rem; color: var(--text-muted); font-weight: 600;">TARGET SCHOOLS</div>
-          <div class="stat-value" id="statTarget" style="color: #fbbf24;">0</div>
-        </div>
-        <div class="stat-card" style="--stat-color: #ef4444;">
-          <div style="font-size: 0.8rem; color: var(--text-muted); font-weight: 600;">REACH SCHOOLS</div>
-          <div class="stat-value" id="statReach" style="color: #f87171;">0</div>
-        </div>
-      </div>
-
-      <div class="card">
-        <div class="card-title">📋 College Portfolio Overview</div>
-        <div class="table-container">
-          <table>
-            <thead>
-              <tr>
-                <th>University Name</th>
-                <th>Type / Location</th>
-                <th>CDS Financial Aid %</th>
-                <th>Evaluated Odds</th>
-                <th>Category</th>
-                <th>Application Status</th>
-                <th>Decision Outcome</th>
-              </tr>
-            </thead>
-            <tbody id="dashboardTableBody"></tbody>
-          </table>
-        </div>
-      </div>
-    </section>
-
     <section class="view-panel" id="view-colleges">
       <div class="card search-card-container">
         <div class="card-title">🔍 Search U.S. Higher Education Registry</div>
         <div class="card-subtitle">Fast offline search engine covering top 50–100 U.S. universities with advanced filters for private/public status, financial aid, and admissions category.</div>
         
-        <div class="form-grid" style="margin-bottom: 16px;">
+        <div class="form-grid" style="margin-bottom: 18px;">
           <div class="form-group">
             <label>Institution Type</label>
             <select class="form-control" id="filterType" onchange="handleFilteredSearch()">
@@ -407,6 +456,7 @@
 
       <div class="card" style="z-index: 1;">
         <div class="card-title">🏛️ My Selected Universities</div>
+        <div class="card-subtitle">Manage your application timeline, track submissions, and log decision results.</div>
         <div class="table-container">
           <table>
             <thead>
@@ -430,7 +480,7 @@
   <script>
     const EMBEDDED_API_KEY = "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";
 
-    // RICH OFFLINE U.S. COLLEGE DATABASE WITH CDS BENCHMARKS (50+ UNIVERSITIES) 
+    // RICH OFFLINE U.S. COLLEGE DATABASE WITH CDS BENCHMARKS (50+ UNIVERSITIES)
     const US_COLLEGES_DATABASE = [
       { name: "Harvard University", type: "Private", location: "Cambridge, MA", acceptRate: 3.4, sat25: 1490, sat75: 1580, act25: 34, act75: 36, finAidPercent: 55, avgGpa: 3.95, csRating: "9.5/10", entRating: "9.5/10" },
       { name: "Massachusetts Institute of Technology (MIT)", type: "Private", location: "Cambridge, MA", acceptRate: 3.9, sat25: 1520, sat75: 1570, act25: 34, act75: 36, finAidPercent: 58, avgGpa: 3.96, csRating: "10/10", entRating: "10/10" },
@@ -505,6 +555,11 @@
       renderAll();
     }
 
+    function switchAuthTab(type) {
+      document.querySelectorAll('.auth-tab').forEach(t => t.classList.remove('active'));
+      event.target.classList.add('active');
+    }
+
     // LOGIN DIRECTS DIRECTLY TO DASHBOARD
     function handleAuth(e) {
       e.preventDefault();
@@ -552,8 +607,8 @@
           item.innerHTML = `
             <div style="display:flex; justify-content:space-between; align-items:center;">
               <div>
-                <strong style="color:#fff;">${uni.name}</strong> <small style="color:var(--text-muted);">(${uni.type} • ${uni.location})</small>
-                <div style="font-size:0.8rem; color:var(--text-muted); margin-top:2px;">Fin Aid Awarded: ${uni.finAidPercent}% | CDS SAT Range: ${uni.sat25}-${uni.sat75}</div>
+                <strong style="color:#fff; font-size:1rem;">${uni.name}</strong> <small style="color:var(--text-muted);">(${uni.type} • ${uni.location})</small>
+                <div style="font-size:0.8rem; color:var(--text-muted); margin-top:4px;">Fin Aid Awarded: ${uni.finAidPercent}% | CDS SAT Range: ${uni.sat25}-${uni.sat75}</div>
               </div>
               <span class="badge ${evalRes.badgeClass}">${evalRes.category}</span>
             </div>
@@ -581,7 +636,7 @@
       renderAll();
     }
 
-    // HOLISTIC EVALUATION ENGINE INCORPORATING T20 COMMON DATA SET BENCHMARKS 
+    // HOLISTIC EVALUATION ENGINE INCORPORATING T20 COMMON DATA SET BENCHMARKS
     function calculateUniversityOdds(uni) {
       const gpaScore = (profileState.gpa / 4.0) * 40;
       let testScore = 20;
@@ -613,7 +668,7 @@
       return { odds, category, badgeClass };
     }
 
-    // RUN CDS COMPARISON FEATURE 
+    // RUN CDS COMPARISON FEATURE
     function populateCDSSchoolSelect() {
       const select = document.getElementById('cdsSelectSchool');
       select.innerHTML = '';
@@ -708,9 +763,9 @@
         const div = document.createElement('div');
         div.className = 'activity-card';
         div.innerHTML = `
-          <div style="display:flex; justify-content:space-between; margin-bottom:12px;">
-            <strong>Activity #${idx + 1}</strong>
-            <button type="button" style="color:var(--danger); border:none; background:none; cursor:pointer;" onclick="removeActivity(${idx})">✕ Remove</button>
+          <div style="display:flex; justify-space-between; align-items:center; margin-bottom:14px;">
+            <strong style="color:#a5b4fc; font-size:0.95rem;">Activity #${idx + 1}</strong>
+            <button type="button" style="color:var(--danger); border:none; background:none; cursor:pointer; font-weight:700;" onclick="removeActivity(${idx})">✕ Remove</button>
           </div>
           <div class="form-grid">
             <div class="form-group"><label>Position Title</label><input type="text" class="form-control" value="${act.title}" onchange="updateActivity(${idx}, 'title', this.value)"></div>
@@ -764,13 +819,13 @@
 
         const tr = document.createElement('tr');
         tr.innerHTML = `
-          <td><strong>${uni.name}</strong></td>
+          <td><strong style="color:#fff; font-size:0.95rem;">${uni.name}</strong></td>
           <td><small style="color:var(--text-muted);">${uni.type} • ${uni.location}</small></td>
-          <td><strong>${uni.finAidPercent}%</strong></td>
-          <td><strong>${evalRes.odds}%</strong></td>
+          <td><strong style="color:#a5b4fc;">${uni.finAidPercent}%</strong></td>
+          <td><strong style="font-size:1.05rem;">${evalRes.odds}%</strong></td>
           <td><span class="badge ${evalRes.badgeClass}">${evalRes.category}</span></td>
-          <td><span style="color:var(--primary); font-weight:600;">${col.status}</span></td>
-          <td>${col.status === 'Submitted' ? `<strong>${col.outcome}</strong>` : `<span style="color:var(--text-subtle);">Pending</span>`}</td>
+          <td><span style="color:var(--primary); font-weight:700;">${col.status}</span></td>
+          <td>${col.status === 'Submitted' ? `<strong style="color:#34d399;">${col.outcome}</strong>` : `<span style="color:var(--text-subtle);">Pending</span>`}</td>
         `;
         dashBody.appendChild(tr);
       });
@@ -787,11 +842,11 @@
         const uni = US_COLLEGES_DATABASE.find(u => u.name === col.name) || { type: "Private", location: "USA", finAidPercent: 50 };
         const tr = document.createElement('tr');
         tr.innerHTML = `
-          <td><strong>${col.name}</strong></td>
+          <td><strong style="color:#fff; font-size:0.95rem;">${col.name}</strong></td>
           <td><small style="color:var(--text-muted);">${uni.type} • ${uni.location}</small></td>
-          <td><strong>${uni.finAidPercent}%</strong></td>
+          <td><strong style="color:#a5b4fc;">${uni.finAidPercent}%</strong></td>
           <td>
-            <select class="form-control" style="padding: 6px 12px; font-size: 0.85rem;" onchange="updateCollegeStatus('${col.name}', this.value)">
+            <select class="form-control" style="padding: 8px 14px; font-size: 0.85rem;" onchange="updateCollegeStatus('${col.name}', this.value)">
               <option value="Not Started" ${col.status === 'Not Started' ? 'selected' : ''}>Not Started</option>
               <option value="In Progress" ${col.status === 'In Progress' ? 'selected' : ''}>In Progress</option>
               <option value="Submitted" ${col.status === 'Submitted' ? 'selected' : ''}>Submitted</option>
@@ -799,7 +854,7 @@
           </td>
           <td>
             ${col.status === 'Submitted' ? `
-              <select class="form-control" style="padding: 6px 12px; font-size: 0.85rem;" onchange="updateCollegeOutcome('${col.name}', this.value)">
+              <select class="form-control" style="padding: 8px 14px; font-size: 0.85rem;" onchange="updateCollegeOutcome('${col.name}', this.value)">
                 <option value="Awaiting Feedback" ${col.outcome === 'Awaiting Feedback' ? 'selected' : ''}>Awaiting Feedback</option>
                 <option value="Accepted" ${col.outcome === 'Accepted' ? 'selected' : ''}>Accepted</option>
                 <option value="Waitlisted" ${col.outcome === 'Waitlisted' ? 'selected' : ''}>Waitlisted</option>
@@ -808,7 +863,7 @@
               </select>
             ` : `<small style="color: var(--text-subtle);">N/A</small>`}
           </td>
-          <td><button style="color:var(--danger); border:none; background:none; cursor:pointer;" onclick="removeCollege('${col.name}')">✕</button></td>
+          <td><button style="color:var(--danger); border:none; background:none; cursor:pointer; font-size:1.1rem; font-weight:700;" onclick="removeCollege('${col.name}')">✕</button></td>
         `;
         mgrBody.appendChild(tr);
       });
@@ -835,7 +890,7 @@
       profileState.lorText = document.getElementById('lorText').value;
 
       localStorage.setItem('apex_v5_profile', JSON.stringify(profileState));
-      alert("Profile successfully updated!");
+      alert("Profile successfully saved and recalculations applied!");
       renderAll();
     }
 
