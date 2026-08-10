@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>College Application Dashboard 2026-2027</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-main: #0f172a;
+      --bg-card: #1e293b;
+      --bg-card-hover: #334155;
+      --accent-primary: #6366f1;
+      --accent-hover: #4f46e5;
+      --accent-success: #10b981;
+      --accent-warning: #f59e0b;
+      --accent-danger: #ef4444;
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --border-color: #334155;
+      --radius: 12px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Inter', sans-serif;
+    }
+
+    body {
+      background-color: var(--bg-main);
+      color: var(--text-main);
+      line-height: 1.5;
+      padding: 24px;
+    }
+
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 24px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    header h1 {
+      font-size: 1.8rem;
+      font-weight: 700;
+      background: linear-gradient(135deg, #a5b4fc, #6366f1);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .badge-cycle {
+      background: rgba(99, 102, 241, 0.2);
+      color: #a5b4fc;
+      padding: 6px 12px;
+      border-radius: 20px;
+      font-size: 0.85rem;
+      font-weight: 600;
+    }
+
+    .grid-layout {
+      display: grid;
+      grid-template-columns: 320px 1fr;
+      gap: 24px;
+    }
+
+    @media (max-width: 1024px) {
+      .grid-layout {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .card {
+      background-color: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius);
+      padding: 20px;
+      margin-bottom: 20px;
+    }
+
+    .card h2 {
+      font-size: 1.2rem;
+      margin-bottom: 16px;
+      color: var(--text-main);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .form-group {
+      margin-bottom: 14px;
+    }
+
+    .form-group label {
+      display: block;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      margin-bottom: 6px;
+      font-weight: 500;
+    }
+
+    .form-control {
+      width: 100%;
+      padding: 10px 12px;
+      background-color: #0f172a;
+      border: 1px solid var(--border-color);
+      border-radius: 6px;
+      color: var(--text-main);
+      font-size: 0.9rem;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    .form-control:focus {
+      border-color: var(--accent-primary);
+    }
+
+    .btn {
+      display: inline-block;
+      width: 100%;
+      padding: 10px 16px;
+      background-color: var(--accent-primary);
+      color: white;
+      border: none;
+      border-radius: 6px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background-color 0.2s;
+    }
+
+    .btn:hover {
+      background-color: var(--accent-hover);
+    }
+
+    .btn-secondary {
+      background-color: #334155;
+      color: var(--text-main);
+    }
+
+    .btn-secondary:hover {
+      background-color: #475569;
+    }
+
+    /* Summary Stats */
+    .stats-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+
+    .stat-card {
+      background: var(--bg-card);
+      padding: 16px;
+      border-radius: var(--radius);
+      border: 1px solid var(--border-color);
+    }
+
+    .stat-card .label {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+
+    .stat-card .value {
+      font-size: 1.5rem;
+      font-weight: 700;
+      margin-top: 4px;
+    }
+
+    /* Table Styling */
+    .table-responsive {
+      overflow-x: auto;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+    }
+
+    th {
+      background-color: #0f172a;
+      color: var(--text-muted);
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      padding: 12px 16px;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    td {
+      padding: 14px 16px;
+      border-bottom: 1px solid var(--border-color);
+      font-size: 0.9rem;
+      vertical-align: middle;
+    }
+
+    tr:hover {
+      background-color: var(--bg-card-hover);
+    }
+
+    .tag {
+      padding: 4px 8px;
+      border-radius: 4px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      display: inline-block;
+    }
+
+    .tag-safety { background: rgba(16, 185, 129, 0.2); color: #34d399; }
+    .tag-target { background: rgba(245, 158, 11, 0.2); color: #fbbf24; }
+    .tag-reach  { background: rgba(239, 68, 68, 0.2); color: #f87171; }
+
+    .rating-pill {
+      background: #0f172a;
+      padding: 4px 8px;
+      border-radius: 4px;
+      font-weight: 600;
+      border: 1px solid var(--border-color);
+    }
+
+    .status-select {
+      background: #0f172a;
+      color: var(--text-main);
+      border: 1px solid var(--border-color);
+      padding: 6px;
+      border-radius: 4px;
+      font-size: 0.85rem;
+    }
+
+    .action-btn {
+      background: none;
+      border: none;
+      color: var(--accent-danger);
+      cursor: pointer;
+      font-size: 1.1rem;
+      padding: 4px 8px;
+    }
+
+    .action-btn:hover {
+      color: #dc2626;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div>
+      <h1>College Navigator & Evaluation Dashboard</h1>
+      <p style="color: var(--text-muted); font-size: 0.9rem;">Tailored for High School Applicants</p>
+    </div>
+    <span class="badge-cycle">2026–2027 Admissions Cycle</span>
+  </header>
+
+  <div class="grid-layout">
+    
+    <aside>
+      <div class="card">
+        <h2>👤 Student Profile</h2>
+        <form id="profileForm">
+          <div class="form-group">
+            <label for="gpa">Unweighted GPA (4.0 Scale)</label>
+            <input type="number" step="0.01" min="0" max="4.0" id="gpa" class="form-control" value="3.85" required>
+          </div>
+          <div class="form-group">
+            <label for="sat">SAT Score (or ACT Equivalent)</label>
+            <input type="number" min="400" max="1600" id="sat" class="form-control" value="1480">
+          </div>
+          <div class="form-group">
+            <label for="csExperience">CS / AI Rigor (1–10 Scale)</label>
+            <input type="number" min="1" max="10" id="csExperience" class="form-control" value="8" title="1=Beginner, 10=National Olympiad/Published Research">
+          </div>
+          <div class="form-group">
+            <label for="entExperience">Entrepreneurship Profile (1–10)</label>
+            <input type="number" min="1" max="10" id="entExperience" class="form-control" value="7" title="1=Basic Club, 10=Revenue Generating Startup">
+          </div>
+          <button type="submit" class="btn">Update Profile</button>
+        </form>
+      </div>
+
+      <div class="card">
+        <h2>➕ Add Target College</h2>
+        <form id="collegeForm">
+          <div class="form-group">
+            <label for="cName">College Name</label>
+            <input type="text" id="cName" class="form-control" placeholder="e.g. Stanford University" required>
+          </div>
+          <div class="form-group">
+            <label for="cLocation">Location</label>
+            <input type="text" id="cLocation" class="form-control" placeholder="e.g. Stanford, CA" required>
+          </div>
+          <div class="form-group">
+            <label for="cAcceptance">Acceptance Rate (%)</label>
+            <input type="number" step="0.1" min="0" max="100" id="cAcceptance" class="form-control" placeholder="e.g. 4.0" required>
+          </div>
+          <div class="form-group">
+            <label for="cCsRating">CS / AI Program Rating (1–10)</label>
+            <input type="number" min="1" max="10" id="cCsRating" class="form-control" value="9" required>
+          </div>
+          <div class="form-group">
+            <label for="cEntRating">Entrepreneurship Rating (1–10)</label>
+            <input type="number" min="1" max="10" id="cEntRating" class="form-control" value="9" required>
+          </div>
+          <button type="submit" class="btn btn-secondary">Add to Tracker</button>
+        </form>
+      </div>
+    </aside>
+
+    <main>
+      <div class="stats-container">
+        <div class="stat-card">
+          <div class="label">Total Selected Schools</div>
+          <div class="value" id="statTotal">0</div>
+        </div>
+        <div class="stat-card">
+          <div class="label">Safety Schools</div>
+          <div class="value" style="color: #34d399;" id="statSafety">0</div>
+        </div>
+        <div class="stat-card">
+          <div class="label">Target Schools</div>
+          <div class="value" style="color: #fbbf24;" id="statTarget">0</div>
+        </div>
+        <div class="stat-card">
+          <div class="label">Reach Schools</div>
+          <div class="value" style="color: #f87171;" id="statReach">0</div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2>📋 College Evaluation Table</h2>
+        <div class="table-responsive">
+          <table>
+            <thead>
+              <tr>
+                <th>College & Location</th>
+                <th>CS & AI Rank</th>
+                <th>Entrepreneurship Rank</th>
+                <th>Evaluated Chance</th>
+                <th>Category</th>
+                <th>Status</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody id="collegeTableBody">
+              </tbody>
+          </table>
+        </div>
+      </div>
+    </main>
+
+  </div>
+
+  <script>
+    // Initial Default Data for 2026-2027 Cycle
+    const initialColleges = [
+      { id: 1, name: "Carnegie Mellon University", location: "Pittsburgh, PA", acceptRate: 11, csRating: 10, entRating: 7, status: "In Progress" },
+      { id: 2, name: "Stanford University", location: "Stanford, CA", acceptRate: 3.9, csRating: 10, entRating: 10, status: "Not Started" },
+      { id: 3, name: "UC Berkeley", location: "Berkeley, CA", acceptRate: 11.4, csRating: 10, entRating: 9, status: "In Progress" },
+      { id: 4, name: "Georgia Institute of Technology", location: "Atlanta, GA", acceptRate: 16, csRating: 9, entRating: 8, status: "Submitted" },
+      { id: 5, name: "University of Washington", location: "Seattle, WA", acceptRate: 48, csRating: 9, entRating: 6, status: "Not Started" }
+    ];
+
+    // State Management
+    let profile = JSON.parse(localStorage.getItem('studentProfile')) || {
+      gpa: 3.85,
+      sat: 1480,
+      csExperience: 8,
+      entExperience: 7
+    };
+
+    let colleges = JSON.parse(localStorage.getItem('collegesList')) || initialColleges;
+
+    // Save Data
+    function saveData() {
+      localStorage.setItem('studentProfile', JSON.stringify(profile));
+      localStorage.setItem('collegesList', JSON.stringify(colleges));
+    }
+
+    // Evaluation Algorithm Logic
+    function evaluateAdmissionsChance(college) {
+      // Academic Index (Base score up to 50 pts)
+      const gpaScore = (profile.gpa / 4.0) * 30; // Max 30 pts
+      const satScore = ((profile.sat - 400) / 1200) * 20; // Max 20 pts
+      
+      // Specialty Alignment Index (Up to 30 pts)
+      const csFit = 15 - Math.abs(profile.csExperience - college.csRating);
+      const entFit = 15 - Math.abs(profile.entExperience - college.entRating);
+      const fitScore = Math.max(5, csFit + entFit);
+
+      // Selectivity Factor Penalty based on Acceptance Rate
+      let selectivityPenalty = (100 - college.acceptRate) * 0.45;
+
+      // Calculate Net Score
+      let estimatedProbability = (gpaScore + satScore + fitScore) - selectivityPenalty;
+      
+      // Normalize between 2% and 95%
+      estimatedProbability = Math.min(95, Math.max(2, Math.round(estimatedProbability)));
+
+      // Classify
+      let category = "Target";
+      let tagClass = "tag-target";
+
+      if (estimatedProbability >= 60 || college.acceptRate > 40) {
+        category = "Safety";
+        tagClass = "tag-safety";
+      } else if (estimatedProbability < 25 || college.acceptRate < 10) {
+        category = "Reach";
+        tagClass = "tag-reach";
+      }
+
+      return { chance: estimatedProbability, category, tagClass };
+    }
+
+    // Render Dashboard
+    function renderDashboard() {
+      const tbody = document.getElementById('collegeTableBody');
+      tbody.innerHTML = '';
+
+      let safetyCount = 0, targetCount = 0, reachCount = 0;
+
+      colleges.forEach((college) => {
+        const { chance, category, tagClass } = evaluateAdmissionsChance(college);
+
+        if (category === "Safety") safetyCount++;
+        if (category === "Target") targetCount++;
+        if (category === "Reach") reachCount++;
+
+        const row = document.createElement('tr');
+        row.innerHTML = `
+          <td>
+            <strong>${college.name}</strong><br>
+            <small style="color: var(--text-muted);">${college.location}</small>
+          </td>
+          <td><span class="rating-pill">⚡ ${college.csRating}/10</span></td>
+          <td><span class="rating-pill">🚀 ${college.entRating}/10</span></td>
+          <td><strong>${chance}%</strong> estimated</td>
+          <td><span class="tag ${tagClass}">${category}</span></td>
+          <td>
+            <select class="status-select" onchange="updateStatus(${college.id}, this.value)">
+              <option value="Not Started" ${college.status === 'Not Started' ? 'selected' : ''}>Not Started</option>
+              <option value="In Progress" ${college.status === 'In Progress' ? 'selected' : ''}>In Progress</option>
+              <option value="Submitted" ${college.status === 'Submitted' ? 'selected' : ''}>Submitted</option>
+              <option value="Accepted" ${college.status === 'Accepted' ? 'selected' : ''}>Accepted</option>
+              <option value="Waitlisted" ${college.status === 'Waitlisted' ? 'selected' : ''}>Waitlisted</option>
+            </select>
+          </td>
+          <td>
+            <button class="action-btn" onclick="deleteCollege(${college.id})" title="Remove College">✕</button>
+          </td>
+        `;
+        tbody.appendChild(row);
+      });
+
+      // Update Summary Cards
+      document.getElementById('statTotal').innerText = colleges.length;
+      document.getElementById('statSafety').innerText = safetyCount;
+      document.getElementById('statTarget').innerText = targetCount;
+      document.getElementById('statReach').innerText = reachCount;
+    }
+
+    // Handlers
+    document.getElementById('profileForm').addEventListener('submit', (e) => {
+      e.preventDefault();
+      profile.gpa = parseFloat(document.getElementById('gpa').value);
+      profile.sat = parseInt(document.getElementById('sat').value);
+      profile.csExperience = parseInt(document.getElementById('csExperience').value);
+      profile.entExperience = parseInt(document.getElementById('entExperience').value);
+      
+      saveData();
+      renderDashboard();
+    });
+
+    document.getElementById('collegeForm').addEventListener('submit', (e) => {
+      e.preventDefault();
+      const newCollege = {
+        id: Date.now(),
+        name: document.getElementById('cName').value,
+        location: document.getElementById('cLocation').value,
+        acceptRate: parseFloat(document.getElementById('cAcceptance').value),
+        csRating: parseInt(document.getElementById('cCsRating').value),
+        entRating: parseInt(document.getElementById('cEntRating').value),
+        status: "Not Started"
+      };
+
+      colleges.push(newCollege);
+      saveData();
+      renderDashboard();
+      e.target.reset();
+    });
+
+    function updateStatus(id, newStatus) {
+      const col = colleges.find(c => c.id === id);
+      if (col) {
+        col.status = newStatus;
+        saveData();
+      }
+    }
+
+    function deleteCollege(id) {
+      colleges = colleges.filter(c => c.id !== id);
+      saveData();
+      renderDashboard();
+    }
+
+    // Initialize Profile Fields and Render
+    document.getElementById('gpa').value = profile.gpa;
+    document.getElementById('sat').value = profile.sat;
+    document.getElementById('csExperience').value = profile.csExperience;
+    document.getElementById('entExperience').value = profile.entExperience;
+
+    renderDashboard();
+  </script>
+</body>
+</html>
