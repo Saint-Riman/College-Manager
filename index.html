@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>ApexApply | Dashboard</title>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
   <style>
@@ -26,24 +26,31 @@
       --radius-lg: 16px;
       --radius-md: 12px;
       --radius-sm: 8px;
-      --glass-bg: rgba(11, 15, 25, 0.82);
+      --glass-bg: rgba(11, 15, 25, 0.85);
       --glass-border: rgba(255, 255, 255, 0.1);
       --transition-smooth: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
       --shadow-premium: 0 20px 40px -15px rgba(0, 0, 0, 0.6), 0 0 1px 1px rgba(255, 255, 255, 0.05);
     }
 
-    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Plus Jakarta Sans', sans-serif; }
+    * { 
+      box-sizing: border-box; 
+      margin: 0; 
+      padding: 0; 
+      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif; 
+      -webkit-tap-highlight-color: transparent;
+    }
 
     /* Custom Scrollbar */
-    ::-webkit-scrollbar { width: 8px; height: 8px; }
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
     ::-webkit-scrollbar-track { background: var(--bg-dark); }
-    ::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.15); border-radius: 4px; }
+    ::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.18); border-radius: 4px; }
     ::-webkit-scrollbar-thumb:hover { background: var(--primary); }
 
     body {
       background-color: var(--bg-dark);
       color: var(--text-main);
       min-height: 100vh;
+      min-height: -webkit-fill-available;
       display: flex;
       flex-direction: column;
       overflow-x: hidden;
@@ -56,12 +63,12 @@
 
     /* Auth Overlay */
     .auth-container {
-      position: fixed; inset: 0; background: rgba(7, 9, 14, 0.95); backdrop-filter: blur(25px); z-index: 1000;
-      display: flex; align-items: center; justify-content: center; padding: 20px; transition: var(--transition-smooth);
+      position: fixed; inset: 0; background: rgba(7, 9, 14, 0.95); backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px); z-index: 1000;
+      display: flex; align-items: center; justify-content: center; padding: 16px; transition: var(--transition-smooth);
     }
     .auth-card {
       background: var(--bg-card); border: 1px solid var(--glass-border);
-      backdrop-filter: blur(30px); border-radius: var(--radius-xl); width: 100%; max-width: 440px; padding: 44px;
+      backdrop-filter: blur(30px); -webkit-backdrop-filter: blur(30px); border-radius: var(--radius-xl); width: 100%; max-width: 440px; padding: 36px 28px;
       box-shadow: 0 30px 60px -12px rgba(0, 0, 0, 0.75), 0 0 30px rgba(99, 102, 241, 0.15);
       position: relative; overflow: hidden;
     }
@@ -69,72 +76,76 @@
       content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
       background: linear-gradient(90deg, var(--primary), var(--accent-cyan));
     }
-    .auth-header { text-align: center; margin-bottom: 32px; }
+    .auth-header { text-align: center; margin-bottom: 28px; }
     .auth-header h2 {
-      font-size: 2rem; font-weight: 800; letter-spacing: -0.02em;
+      font-size: 1.85rem; font-weight: 800; letter-spacing: -0.02em;
       background: linear-gradient(135deg, #ffffff 20%, #a5b4fc 100%);
       -webkit-background-clip: text; -webkit-text-fill-color: transparent;
     }
-    .auth-header p { font-size: 0.875rem; color: var(--text-muted); margin-top: 6px; }
+    .auth-header p { font-size: 0.85rem; color: var(--text-muted); margin-top: 6px; }
     .auth-tabs { display: flex; background: rgba(0, 0, 0, 0.4); padding: 4px; border-radius: var(--radius-md); margin-bottom: 24px; border: 1px solid rgba(255,255,255,0.05); }
     .auth-tab {
       flex: 1; padding: 12px; text-align: center; background: transparent; border: none;
       color: var(--text-muted); font-weight: 600; font-size: 0.85rem; cursor: pointer; border-radius: var(--radius-sm);
-      transition: var(--transition-smooth);
+      transition: var(--transition-smooth); min-height: 44px; display: flex; align-items: center; justify-content: center;
     }
     .auth-tab.active { background: var(--primary); color: #fff; box-shadow: 0 4px 12px var(--primary-glow); }
 
     /* Header & Navigation */
     .app-header {
-      display: flex; justify-content: space-between; align-items: center; padding: 18px 40px;
-      background: var(--glass-bg); backdrop-filter: blur(20px); border-bottom: 1px solid var(--glass-border);
+      display: flex; justify-content: space-between; align-items: center; padding: 16px 32px;
+      background: var(--glass-bg); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border-bottom: 1px solid var(--glass-border);
       position: sticky; top: 0; z-index: 100; box-shadow: 0 10px 30px rgba(0,0,0,0.3);
     }
-    .brand { display: flex; align-items: center; gap: 14px; cursor: pointer; }
+    .brand { display: flex; align-items: center; gap: 12px; cursor: pointer; }
     .brand-logo {
       width: 40px; height: 40px; background: linear-gradient(135deg, var(--primary), var(--accent-cyan));
       border-radius: var(--radius-md); display: flex; align-items: center; justify-content: center; font-weight: 800; color: white;
-      box-shadow: 0 0 20px var(--primary-glow); font-size: 1.1rem;
+      box-shadow: 0 0 20px var(--primary-glow); font-size: 1.1rem; flex-shrink: 0;
     }
-    .brand-title { font-weight: 800; font-size: 1.35rem; letter-spacing: -0.02em; color: var(--text-main); }
+    .brand-title { font-weight: 800; font-size: 1.25rem; letter-spacing: -0.02em; color: var(--text-main); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
     .hamburger-btn {
       background: rgba(255, 255, 255, 0.04); border: 1px solid var(--glass-border); color: var(--text-main);
       width: 44px; height: 44px; border-radius: var(--radius-md); cursor: pointer;
       display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 5px;
-      transition: var(--transition-smooth);
+      transition: var(--transition-smooth); flex-shrink: 0; min-height: 44px; min-width: 44px;
     }
-    .hamburger-btn:hover { background: rgba(255, 255, 255, 0.1); border-color: rgba(255, 255, 255, 0.2); transform: scale(1.03); }
+    .hamburger-btn:hover, .hamburger-btn:active { background: rgba(255, 255, 255, 0.1); border-color: rgba(255, 255, 255, 0.2); }
     .hamburger-btn span { width: 22px; height: 2px; background-color: var(--text-main); border-radius: 2px; transition: var(--transition-smooth); }
 
     /* Drawer */
     .drawer-overlay {
-      position: fixed; inset: 0; background: rgba(0,0,0,0.7); backdrop-filter: blur(8px); z-index: 200;
+      position: fixed; inset: 0; background: rgba(0,0,0,0.75); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); z-index: 200;
       opacity: 0; pointer-events: none; transition: var(--transition-smooth);
     }
     .drawer-overlay.active { opacity: 1; pointer-events: auto; }
     .drawer {
-      position: fixed; top: 0; right: -340px; width: 340px; height: 100%;
-      background: rgba(11, 15, 25, 0.95); border-left: 1px solid var(--glass-border); z-index: 201;
-      padding: 36px 28px; display: flex; flex-direction: column; transition: var(--transition-smooth);
-      backdrop-filter: blur(30px); box-shadow: -20px 0 50px rgba(0,0,0,0.8);
+      position: fixed; top: 0; right: -320px; width: 320px; max-width: 85vw; height: 100%;
+      background: rgba(11, 15, 25, 0.96); border-left: 1px solid var(--glass-border); z-index: 201;
+      padding: 32px 24px; display: flex; flex-direction: column; transition: var(--transition-smooth);
+      backdrop-filter: blur(30px); -webkit-backdrop-filter: blur(30px); box-shadow: -20px 0 50px rgba(0,0,0,0.8);
     }
     .drawer.active { right: 0; }
-    .drawer-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 36px; }
-    .close-btn { background: rgba(255,255,255,0.05); border: 1px solid var(--glass-border); color: var(--text-muted); font-size: 1.25rem; width: 36px; height: 36px; border-radius: 50%; cursor: pointer; transition: var(--transition-smooth); }
-    .close-btn:hover { color: #fff; background: rgba(255,255,255,0.15); }
+    .drawer-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 32px; }
+    .close-btn { 
+      background: rgba(255,255,255,0.05); border: 1px solid var(--glass-border); color: var(--text-muted); 
+      font-size: 1.25rem; width: 40px; height: 40px; border-radius: 50%; cursor: pointer; 
+      display: flex; align-items: center; justify-content: center; transition: var(--transition-smooth); 
+    }
+    .close-btn:hover, .close-btn:active { color: #fff; background: rgba(255,255,255,0.18); }
     .drawer-nav { display: flex; flex-direction: column; gap: 10px; flex: 1; }
     .nav-item {
-      display: flex; align-items: center; gap: 14px; padding: 14px 20px; color: var(--text-muted);
+      display: flex; align-items: center; gap: 14px; padding: 14px 18px; color: var(--text-muted);
       border-radius: var(--radius-md); font-weight: 600; font-size: 0.95rem; cursor: pointer; transition: var(--transition-smooth);
-      border: 1px solid transparent;
+      border: 1px solid transparent; min-height: 48px;
     }
-    .nav-item:hover { background: rgba(255, 255, 255, 0.05); color: #fff; transform: translateX(-4px); }
+    .nav-item:hover, .nav-item:active { background: rgba(255, 255, 255, 0.05); color: #fff; transform: translateX(-4px); }
     .nav-item.active { background: linear-gradient(135deg, rgba(99, 102, 241, 0.2), rgba(6, 182, 212, 0.1)); color: #fff; border-color: rgba(99, 102, 241, 0.4); box-shadow: 0 4px 20px rgba(0,0,0,0.3); }
     .nav-item.logout { margin-top: auto; color: #f87171; background: rgba(239, 68, 68, 0.08); border-color: rgba(239, 68, 68, 0.2); }
-    .nav-item.logout:hover { background: rgba(239, 68, 68, 0.18); color: #fff; }
+    .nav-item.logout:hover, .nav-item.logout:active { background: rgba(239, 68, 68, 0.18); color: #fff; }
 
     /* Layout & Cards */
-    .main-container { max-width: 1380px; margin: 0 auto; padding: 40px 32px; width: 100%; flex: 1; }
+    .main-container { max-width: 1380px; margin: 0 auto; padding: 32px 24px; width: 100%; flex: 1; }
     .view-panel { display: none; animation: fadeIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
     .view-panel.active { display: block; }
     
@@ -145,21 +156,22 @@
 
     .card {
       background: var(--bg-card); border: 1px solid var(--bg-card-border); border-radius: var(--radius-xl);
-      padding: 32px; margin-bottom: 28px; backdrop-filter: blur(20px); position: relative;
+      padding: 28px; margin-bottom: 24px; backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); position: relative;
       box-shadow: var(--shadow-premium); transition: var(--transition-smooth); overflow: hidden;
     }
     .card:hover { border-color: rgba(255, 255, 255, 0.15); }
-    .card-title { font-size: 1.35rem; font-weight: 800; margin-bottom: 6px; letter-spacing: -0.01em; }
-    .card-subtitle { color: var(--text-muted); font-size: 0.9rem; margin-bottom: 28px; line-height: 1.5; }
+    .card-title { font-size: 1.25rem; font-weight: 800; margin-bottom: 6px; letter-spacing: -0.01em; }
+    .card-subtitle { color: var(--text-muted); font-size: 0.88rem; margin-bottom: 24px; line-height: 1.5; }
 
     /* Forms & Controls */
-    .form-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 24px; }
+    .form-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 20px; }
     .form-group { display: flex; flex-direction: column; gap: 8px; }
     .form-group.full-width { grid-column: 1 / -1; }
-    label { font-size: 0.8rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em; }
+    label { font-size: 0.78rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em; }
     .form-control {
       background: rgba(7, 9, 14, 0.7); border: 1px solid var(--glass-border); border-radius: var(--radius-md);
-      padding: 14px 18px; color: var(--text-main); font-size: 0.95rem; outline: none; width: 100%; transition: var(--transition-smooth);
+      padding: 14px 16px; color: var(--text-main); font-size: 0.95rem; outline: none; width: 100%; transition: var(--transition-smooth);
+      min-height: 48px;
     }
     .form-control:focus { border-color: var(--primary); box-shadow: 0 0 0 4px var(--primary-glow); background: rgba(7, 9, 14, 0.9); }
     select.form-control {
@@ -167,65 +179,120 @@
       background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2394a3b8' stroke-width='2'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
       background-repeat: no-repeat; background-position: right 1.2rem center; background-size: 1.1em; padding-right: 2.8rem;
     }
-    textarea.form-control { resize: vertical; min-height: 130px; line-height: 1.6; }
+    textarea.form-control { resize: vertical; min-height: 120px; line-height: 1.6; }
     .btn {
       background: linear-gradient(135deg, var(--primary), var(--primary-hover)); color: white; border: none; padding: 14px 28px; border-radius: var(--radius-md);
       font-weight: 700; font-size: 0.95rem; cursor: pointer; transition: var(--transition-smooth);
       display: inline-flex; align-items: center; justify-content: center; gap: 10px;
-      box-shadow: 0 8px 20px var(--primary-glow);
+      box-shadow: 0 8px 20px var(--primary-glow); min-height: 48px;
     }
-    .btn:hover { transform: translateY(-2px); box-shadow: 0 12px 25px var(--primary-glow); background: linear-gradient(135deg, #7073f3, var(--primary)); }
+    .btn:hover, .btn:active { transform: translateY(-2px); box-shadow: 0 12px 25px var(--primary-glow); background: linear-gradient(135deg, #7073f3, var(--primary)); }
     .btn:active { transform: translateY(0); }
     .btn-secondary { background: rgba(255, 255, 255, 0.06); color: var(--text-main); border: 1px solid var(--glass-border); box-shadow: none; }
-    .btn-secondary:hover { background: rgba(255, 255, 255, 0.12); border-color: rgba(255, 255, 255, 0.2); box-shadow: 0 6px 15px rgba(0,0,0,0.2); }
+    .btn-secondary:hover, .btn-secondary:active { background: rgba(255, 255, 255, 0.12); border-color: rgba(255, 255, 255, 0.2); box-shadow: 0 6px 15px rgba(0,0,0,0.2); }
 
     /* Search Container Stack Elevation */
     .search-card-container { position: relative; z-index: 50; }
     .search-box { position: relative; }
     .search-results {
-      position: absolute; top: calc(100% + 8px); left: 0; right: 0; background: rgba(15, 23, 42, 0.95); border: 1px solid var(--glass-border);
-      border-radius: var(--radius-lg); max-height: 380px; overflow-y: auto; z-index: 9999;
-      box-shadow: 0 25px 60px rgba(0,0,0,0.9), 0 0 20px rgba(99, 102, 241, 0.2); display: none; backdrop-filter: blur(25px);
+      position: absolute; top: calc(100% + 8px); left: 0; right: 0; background: rgba(15, 23, 42, 0.96); border: 1px solid var(--glass-border);
+      border-radius: var(--radius-lg); max-height: 340px; overflow-y: auto; z-index: 9999;
+      box-shadow: 0 25px 60px rgba(0,0,0,0.9), 0 0 20px rgba(99, 102, 241, 0.2); display: none; backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px);
     }
     .search-results.active { display: block; animation: fadeIn 0.2s ease-out; }
-    .search-item { padding: 16px 20px; cursor: pointer; border-bottom: 1px solid var(--glass-border); transition: var(--transition-smooth); }
+    .search-item { padding: 14px 18px; cursor: pointer; border-bottom: 1px solid var(--glass-border); transition: var(--transition-smooth); }
     .search-item:last-child { border-bottom: none; }
-    .search-item:hover { background: rgba(99, 102, 241, 0.18); }
+    .search-item:hover, .search-item:active { background: rgba(99, 102, 241, 0.18); }
 
     /* Comparison Box */
     .cds-comparison-grid {
-      display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 18px; margin-top: 20px;
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 16px; margin-top: 20px;
     }
     .cds-metric-card {
-      background: rgba(7, 9, 14, 0.5); border: 1px solid var(--glass-border); border-radius: var(--radius-md); padding: 20px;
+      background: rgba(7, 9, 14, 0.5); border: 1px solid var(--glass-border); border-radius: var(--radius-md); padding: 18px;
       transition: var(--transition-smooth);
     }
     .cds-metric-card:hover { border-color: rgba(99, 102, 241, 0.4); transform: translateY(-2px); }
-    .cds-metric-title { font-size: 0.75rem; color: var(--text-muted); font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; }
-    .cds-metric-val { font-size: 1.2rem; font-weight: 800; margin-top: 8px; color: #a5b4fc; }
+    .cds-metric-title { font-size: 0.72rem; color: var(--text-muted); font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; }
+    .cds-metric-val { font-size: 1.15rem; font-weight: 800; margin-top: 8px; color: #a5b4fc; word-break: break-word; }
 
     /* Tables & Stats */
-    .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 24px; margin-bottom: 32px; }
+    .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 20px; margin-bottom: 28px; }
     .stat-card {
-      background: var(--bg-card); border: 1px solid var(--bg-card-border); border-radius: var(--radius-xl); padding: 28px; position: relative;
-      box-shadow: var(--shadow-premium); backdrop-filter: blur(20px); transition: var(--transition-smooth); overflow: hidden;
+      background: var(--bg-card); border: 1px solid var(--bg-card-border); border-radius: var(--radius-xl); padding: 24px; position: relative;
+      box-shadow: var(--shadow-premium); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); transition: var(--transition-smooth); overflow: hidden;
     }
     .stat-card:hover { transform: translateY(-4px); border-color: rgba(255,255,255,0.18); }
     .stat-card::before { content: ''; position: absolute; top: 0; left: 0; width: 5px; height: 100%; background: var(--stat-color); }
-    .stat-value { font-size: 2.5rem; font-weight: 800; margin-top: 10px; letter-spacing: -0.02em; }
+    .stat-value { font-size: 2.2rem; font-weight: 800; margin-top: 8px; letter-spacing: -0.02em; }
     
-    .table-container { overflow-x: auto; border-radius: var(--radius-lg); border: 1px solid var(--glass-border); z-index: 1; background: rgba(7, 9, 14, 0.4); }
-    table { width: 100%; border-collapse: collapse; text-align: left; }
-    th { background: rgba(11, 15, 25, 0.9); padding: 18px 24px; font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.08em; font-weight: 700; border-bottom: 1px solid var(--glass-border); }
-    td { padding: 20px 24px; border-bottom: 1px solid var(--glass-border); font-size: 0.92rem; transition: var(--transition-smooth); }
+    .table-container { 
+      overflow-x: auto; 
+      -webkit-overflow-scrolling: touch; 
+      border-radius: var(--radius-lg); 
+      border: 1px solid var(--glass-border); 
+      z-index: 1; 
+      background: rgba(7, 9, 14, 0.4); 
+    }
+    table { width: 100%; border-collapse: collapse; text-align: left; min-width: 680px; }
+    th { background: rgba(11, 15, 25, 0.9); padding: 16px 20px; font-size: 0.72rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.08em; font-weight: 700; border-bottom: 1px solid var(--glass-border); white-space: nowrap; }
+    td { padding: 16px 20px; border-bottom: 1px solid var(--glass-border); font-size: 0.9rem; transition: var(--transition-smooth); vertical-align: middle; }
     tr:last-child td { border-bottom: none; }
     tr:hover td { background: rgba(255, 255, 255, 0.03); }
-    .badge { padding: 6px 14px; border-radius: 30px; font-size: 0.75rem; font-weight: 800; letter-spacing: 0.03em; display: inline-block; }
+    .badge { padding: 6px 12px; border-radius: 30px; font-size: 0.72rem; font-weight: 800; letter-spacing: 0.03em; display: inline-block; white-space: nowrap; }
     .badge-safety { background: rgba(16, 185, 129, 0.15); color: #34d399; border: 1px solid rgba(16, 185, 129, 0.35); box-shadow: 0 0 12px rgba(16, 185, 129, 0.15); }
     .badge-target { background: rgba(245, 158, 11, 0.15); color: #fbbf24; border: 1px solid rgba(245, 158, 11, 0.35); box-shadow: 0 0 12px rgba(245, 158, 11, 0.15); }
     .badge-reach  { background: rgba(239, 68, 68, 0.15); color: #f87171; border: 1px solid rgba(239, 68, 68, 0.35); box-shadow: 0 0 12px rgba(239, 68, 68, 0.15); }
-    .activity-card { background: rgba(7, 9, 14, 0.5); border: 1px solid var(--glass-border); border-radius: var(--radius-lg); padding: 20px; margin-bottom: 20px; transition: var(--transition-smooth); }
+    .activity-card { background: rgba(7, 9, 14, 0.5); border: 1px solid var(--glass-border); border-radius: var(--radius-lg); padding: 18px; margin-bottom: 16px; transition: var(--transition-smooth); }
     .activity-card:hover { border-color: rgba(99, 102, 241, 0.3); }
+
+    /* =========================================================
+       RESPONSIVE & MOBILE UX ADAPTATIONS (10+ YEARS SPECIALIZATION)
+       ========================================================= */
+    @media (max-width: 768px) {
+      .app-header { padding: 14px 18px; }
+      .brand-title { font-size: 1.1rem; }
+      .brand-logo { width: 36px; height: 36px; font-size: 1rem; }
+      .hamburger-btn { width: 40px; height: 40px; min-width: 40px; min-height: 40px; }
+      
+      .main-container { padding: 20px 14px; }
+      .card { padding: 20px 16px; border-radius: var(--radius-lg); margin-bottom: 18px; }
+      .card-title { font-size: 1.15rem; }
+      .card-subtitle { font-size: 0.82rem; margin-bottom: 18px; }
+      
+      .stats-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; margin-bottom: 20px; }
+      .stat-card { padding: 18px 14px; border-radius: var(--radius-lg); }
+      .stat-value { font-size: 1.8rem; }
+      
+      .form-grid { grid-template-columns: 1fr; gap: 16px; }
+      .form-control { padding: 12px 14px; font-size: 0.9rem; }
+      
+      .cds-comparison-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; }
+      .cds-metric-card { padding: 14px 12px; }
+      .cds-metric-val { font-size: 1rem; }
+      
+      .btn { width: 100%; padding: 14px; font-size: 0.9rem; }
+      .btn-secondary { width: 100%; }
+
+      .auth-card { padding: 28px 20px; border-radius: var(--radius-lg); }
+      .auth-header h2 { font-size: 1.6rem; }
+
+      /* Visual scrolling indicator hint for horizontal tables on mobile */
+      .table-container::after {
+        content: '← Scroll for full details →';
+        display: block;
+        text-align: center;
+        font-size: 0.7rem;
+        color: var(--text-subtle);
+        padding: 8px;
+        background: rgba(0,0,0,0.3);
+      }
+    }
+
+    @media (max-width: 420px) {
+      .stats-grid { grid-template-columns: 1fr; }
+      .cds-comparison-grid { grid-template-columns: 1fr; }
+    }
   </style>
 </head>
 <body>
@@ -237,19 +304,19 @@
         <p>Complete U.S. Admissions Suite</p>
       </div>
       <div class="auth-tabs">
-        <button class="auth-tab active" onclick="switchAuthTab('login')">Sign In</button>
-        <button class="auth-tab" onclick="switchAuthTab('signup')">Create Account</button>
+        <button class="auth-tab active" id="tabLogin" onclick="switchAuthTab('login')">Sign In</button>
+        <button class="auth-tab" id="tabSignup" onclick="switchAuthTab('signup')">Create Account</button>
       </div>
       <form onsubmit="handleAuth(event)">
-        <div class="form-group" style="margin-bottom: 18px;">
+        <div class="form-group" style="margin-bottom: 16px;">
           <label>Email Address</label>
           <input type="email" class="form-control" id="authEmail" placeholder="student@school.edu" required>
         </div>
-        <div class="form-group" style="margin-bottom: 28px;">
+        <div class="form-group" style="margin-bottom: 24px;">
           <label>Password</label>
-          <input type="password" class="form-control" placeholder="••••••••" required>
+          <input type="password" class="form-control" id="authPassword" placeholder="••••••••" required>
         </div>
-        <button type="submit" class="btn" style="width: 100%;">Sign In</button>
+        <button type="submit" class="btn" style="width: 100%;" id="authSubmitBtn">Sign In</button>
       </form>
     </div>
   </div>
@@ -259,7 +326,7 @@
       <div class="brand-logo">A</div>
       <div class="brand-title" id="appHeaderTitle">ApexApply | Dashboard</div>
     </div>
-    <button class="hamburger-btn" onclick="toggleDrawer()">
+    <button class="hamburger-btn" onclick="toggleDrawer()" aria-label="Toggle Navigation Menu">
       <span></span><span></span><span></span>
     </button>
   </header>
@@ -283,19 +350,19 @@
     <section class="view-panel active" id="view-dashboard">
       <div class="stats-grid">
         <div class="stat-card" style="--stat-color: #6366f1;">
-          <div style="font-size: 0.8rem; color: var(--text-muted); font-weight: 700; letter-spacing:0.05em;">TOTAL SELECTED</div>
+          <div style="font-size: 0.78rem; color: var(--text-muted); font-weight: 700; letter-spacing:0.05em;">TOTAL SELECTED</div>
           <div class="stat-value" id="statTotal">0</div>
         </div>
         <div class="stat-card" style="--stat-color: #10b981;">
-          <div style="font-size: 0.8rem; color: var(--text-muted); font-weight: 700; letter-spacing:0.05em;">SAFETY SCHOOLS</div>
+          <div style="font-size: 0.78rem; color: var(--text-muted); font-weight: 700; letter-spacing:0.05em;">SAFETY SCHOOLS</div>
           <div class="stat-value" id="statSafety" style="color: #34d399;">0</div>
         </div>
         <div class="stat-card" style="--stat-color: #f59e0b;">
-          <div style="font-size: 0.8rem; color: var(--text-muted); font-weight: 700; letter-spacing:0.05em;">TARGET SCHOOLS</div>
+          <div style="font-size: 0.78rem; color: var(--text-muted); font-weight: 700; letter-spacing:0.05em;">TARGET SCHOOLS</div>
           <div class="stat-value" id="statTarget" style="color: #fbbf24;">0</div>
         </div>
         <div class="stat-card" style="--stat-color: #ef4444;">
-          <div style="font-size: 0.8rem; color: var(--text-muted); font-weight: 700; letter-spacing:0.05em;">REACH SCHOOLS</div>
+          <div style="font-size: 0.78rem; color: var(--text-muted); font-weight: 700; letter-spacing:0.05em;">REACH SCHOOLS</div>
           <div class="stat-value" id="statReach" style="color: #f87171;">0</div>
         </div>
       </div>
@@ -325,10 +392,25 @@
     <section class="view-panel" id="view-profile">
       <div class="card">
         <div class="card-title">👤 Student Profile & Holistic Metrics</div>
-        <div class="card-subtitle">Configure your academic metrics, international curriculum rigor, and Common App activities.</div>
+        <div class="card-subtitle">Configure your login credentials, academic metrics, international curriculum rigor, and Common App activities.</div>
         
         <form onsubmit="saveProfile(event)">
           <div class="form-grid">
+            
+            <div class="form-group full-width" style="background: rgba(99,102,241,0.06); border: 1px solid var(--primary-glow); padding: 18px; border-radius: var(--radius-md); margin-bottom: 8px;">
+              <div class="card-title" style="font-size: 1rem; color: #a5b4fc; margin-bottom: 12px;">🔑 Account Login Credentials</div>
+              <div class="form-grid">
+                <div class="form-group">
+                  <label>Saved Account Email</label>
+                  <input type="email" class="form-control" id="profEmail" required placeholder="student@school.edu">
+                </div>
+                <div class="form-group">
+                  <label>Saved Account Password</label>
+                  <input type="password" class="form-control" id="profPassword" placeholder="••••••••">
+                </div>
+              </div>
+            </div>
+
             <div class="form-group">
               <label>Unweighted GPA (4.0 Scale)</label>
               <input type="number" step="0.01" min="0" max="4.0" class="form-control" id="profGpa" required>
@@ -515,12 +597,20 @@
     ];
 
     let profileState = JSON.parse(localStorage.getItem('apex_v5_profile')) || {
-      gpa: 3.85, rigor: "4", satOption: "score", sat: 1480, actOption: "na", act: null,
+      email: "student@school.edu",
+      password: "••••••••",
+      gpa: 3.85, 
+      rigor: "4", 
+      satOption: "score", 
+      sat: 1480, 
+      actOption: "na", 
+      act: null,
       activities: [
         { title: "Research Assistant", org: "National Science Project", description: "Analyzed dataset metrics.", tier: "1" },
         { title: "Student Body Vice President", org: "Student Council", description: "Organized campus event operations.", tier: "2" }
       ],
-      lorText: "", lorScore: 4.0
+      lorText: "", 
+      lorScore: 4.0
     };
 
     let selectedColleges = JSON.parse(localStorage.getItem('apex_v5_colleges')) || [
@@ -553,16 +643,36 @@
 
       if (document.getElementById('drawer').classList.contains('active')) toggleDrawer();
       renderAll();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
+    let authMode = 'login';
     function switchAuthTab(type) {
+      authMode = type;
       document.querySelectorAll('.auth-tab').forEach(t => t.classList.remove('active'));
-      event.target.classList.add('active');
+      if (type === 'login') {
+        document.getElementById('tabLogin').classList.add('active');
+        document.getElementById('authSubmitBtn').innerText = 'Sign In';
+      } else {
+        document.getElementById('tabSignup').classList.add('active');
+        document.getElementById('authSubmitBtn').innerText = 'Create Account';
+      }
     }
 
-    // LOGIN DIRECTS DIRECTLY TO DASHBOARD
+    // LOGIN DIRECTS DIRECTLY TO DASHBOARD AND SAVES EMAIL/PASSWORD TO PROFILE CREATION STATE
     function handleAuth(e) {
       e.preventDefault();
+      const emailInput = document.getElementById('authEmail').value.trim();
+      const passInput = document.getElementById('authPassword').value;
+
+      if (emailInput) {
+        profileState.email = emailInput;
+      }
+      if (passInput) {
+        profileState.password = passInput;
+      }
+
+      localStorage.setItem('apex_v5_profile', JSON.stringify(profileState));
       document.getElementById('authOverlay').style.display = 'none';
       switchView('dashboard');
     }
@@ -605,10 +715,10 @@
           const item = document.createElement('div');
           item.className = 'search-item';
           item.innerHTML = `
-            <div style="display:flex; justify-content:space-between; align-items:center;">
+            <div style="display:flex; justify-content:space-between; align-items:center; gap: 10px;">
               <div>
-                <strong style="color:#fff; font-size:1rem;">${uni.name}</strong> <small style="color:var(--text-muted);">(${uni.type} • ${uni.location})</small>
-                <div style="font-size:0.8rem; color:var(--text-muted); margin-top:4px;">Fin Aid Awarded: ${uni.finAidPercent}% | CDS SAT Range: ${uni.sat25}-${uni.sat75}</div>
+                <strong style="color:#fff; font-size:0.95rem;">${uni.name}</strong> <small style="color:var(--text-muted);">(${uni.type} • ${uni.location})</small>
+                <div style="font-size:0.78rem; color:var(--text-muted); margin-top:4px;">Fin Aid Awarded: ${uni.finAidPercent}% | CDS SAT Range: ${uni.sat25}-${uni.sat75}</div>
               </div>
               <span class="badge ${evalRes.badgeClass}">${evalRes.category}</span>
             </div>
@@ -763,8 +873,8 @@
         const div = document.createElement('div');
         div.className = 'activity-card';
         div.innerHTML = `
-          <div style="display:flex; justify-space-between; align-items:center; margin-bottom:14px;">
-            <strong style="color:#a5b4fc; font-size:0.95rem;">Activity #${idx + 1}</strong>
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+            <strong style="color:#a5b4fc; font-size:0.9rem;">Activity #${idx + 1}</strong>
             <button type="button" style="color:var(--danger); border:none; background:none; cursor:pointer; font-weight:700;" onclick="removeActivity(${idx})">✕ Remove</button>
           </div>
           <div class="form-grid">
@@ -795,6 +905,9 @@
     }
 
     function renderAll() {
+      // Load saved profile data including account credentials
+      document.getElementById('profEmail').value = profileState.email || 'student@school.edu';
+      document.getElementById('profPassword').value = profileState.password || '';
       document.getElementById('profGpa').value = profileState.gpa;
       document.getElementById('profRigor').value = profileState.rigor;
       document.getElementById('profSatOption').value = profileState.satOption;
@@ -802,7 +915,10 @@
       document.getElementById('profActOption').value = profileState.actOption;
       document.getElementById('profAct').value = profileState.act || '';
       document.getElementById('lorText').value = profileState.lorText || '';
-      toggleTestInput('sat'); toggleTestInput('act'); renderActivities();
+      
+      toggleTestInput('sat'); 
+      toggleTestInput('act'); 
+      renderActivities();
 
       populateCDSSchoolSelect();
 
@@ -819,7 +935,7 @@
 
         const tr = document.createElement('tr');
         tr.innerHTML = `
-          <td><strong style="color:#fff; font-size:0.95rem;">${uni.name}</strong></td>
+          <td><strong style="color:#fff; font-size:0.92rem;">${uni.name}</strong></td>
           <td><small style="color:var(--text-muted);">${uni.type} • ${uni.location}</small></td>
           <td><strong style="color:#a5b4fc;">${uni.finAidPercent}%</strong></td>
           <td><strong style="font-size:1.05rem;">${evalRes.odds}%</strong></td>
@@ -842,11 +958,11 @@
         const uni = US_COLLEGES_DATABASE.find(u => u.name === col.name) || { type: "Private", location: "USA", finAidPercent: 50 };
         const tr = document.createElement('tr');
         tr.innerHTML = `
-          <td><strong style="color:#fff; font-size:0.95rem;">${col.name}</strong></td>
+          <td><strong style="color:#fff; font-size:0.92rem;">${col.name}</strong></td>
           <td><small style="color:var(--text-muted);">${uni.type} • ${uni.location}</small></td>
           <td><strong style="color:#a5b4fc;">${uni.finAidPercent}%</strong></td>
           <td>
-            <select class="form-control" style="padding: 8px 14px; font-size: 0.85rem;" onchange="updateCollegeStatus('${col.name}', this.value)">
+            <select class="form-control" style="padding: 8px 12px; font-size: 0.85rem; min-height: 40px;" onchange="updateCollegeStatus('${col.name}', this.value)">
               <option value="Not Started" ${col.status === 'Not Started' ? 'selected' : ''}>Not Started</option>
               <option value="In Progress" ${col.status === 'In Progress' ? 'selected' : ''}>In Progress</option>
               <option value="Submitted" ${col.status === 'Submitted' ? 'selected' : ''}>Submitted</option>
@@ -854,7 +970,7 @@
           </td>
           <td>
             ${col.status === 'Submitted' ? `
-              <select class="form-control" style="padding: 8px 14px; font-size: 0.85rem;" onchange="updateCollegeOutcome('${col.name}', this.value)">
+              <select class="form-control" style="padding: 8px 12px; font-size: 0.85rem; min-height: 40px;" onchange="updateCollegeOutcome('${col.name}', this.value)">
                 <option value="Awaiting Feedback" ${col.outcome === 'Awaiting Feedback' ? 'selected' : ''}>Awaiting Feedback</option>
                 <option value="Accepted" ${col.outcome === 'Accepted' ? 'selected' : ''}>Accepted</option>
                 <option value="Waitlisted" ${col.outcome === 'Waitlisted' ? 'selected' : ''}>Waitlisted</option>
@@ -863,7 +979,7 @@
               </select>
             ` : `<small style="color: var(--text-subtle);">N/A</small>`}
           </td>
-          <td><button style="color:var(--danger); border:none; background:none; cursor:pointer; font-size:1.1rem; font-weight:700;" onclick="removeCollege('${col.name}')">✕</button></td>
+          <td><button style="color:var(--danger); border:none; background:none; cursor:pointer; font-size:1.1rem; font-weight:700; padding: 6px;" onclick="removeCollege('${col.name}')">✕</button></td>
         `;
         mgrBody.appendChild(tr);
       });
@@ -881,6 +997,8 @@
 
     function saveProfile(e) {
       e.preventDefault();
+      profileState.email = document.getElementById('profEmail').value.trim();
+      profileState.password = document.getElementById('profPassword').value;
       profileState.gpa = parseFloat(document.getElementById('profGpa').value);
       profileState.rigor = document.getElementById('profRigor').value;
       profileState.satOption = document.getElementById('profSatOption').value;
@@ -890,7 +1008,7 @@
       profileState.lorText = document.getElementById('lorText').value;
 
       localStorage.setItem('apex_v5_profile', JSON.stringify(profileState));
-      alert("Profile successfully saved and recalculations applied!");
+      alert("Profile and account login details successfully saved!");
       renderAll();
     }
 
