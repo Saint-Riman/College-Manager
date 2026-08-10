@@ -145,8 +145,8 @@
     .nav-item.logout:hover, .nav-item.logout:active { background: rgba(239, 68, 68, 0.18); color: #fff; }
 
     /* Layout & Cards */
-    .main-container { max-width: 1380px; margin: 0 auto; padding: 32px 24px; width: 100%; flex: 1; }
-    .view-panel { display: none; animation: fadeIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+    .main-container { max-width: 1380px; margin: 0 auto; padding: 32px 24px; width: 100%; flex: 1; position: relative; }
+    .view-panel { display: none; animation: fadeIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards; position: relative; }
     .view-panel.active { display: block; }
     
     @keyframes fadeIn {
@@ -157,7 +157,7 @@
     .card {
       background: var(--bg-card); border: 1px solid var(--bg-card-border); border-radius: var(--radius-xl);
       padding: 28px; margin-bottom: 24px; backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); position: relative;
-      box-shadow: var(--shadow-premium); transition: var(--transition-smooth); overflow: visible; /* FIX: Changed from overflow: hidden to prevent cropping dropdowns */
+      box-shadow: var(--shadow-premium); transition: var(--transition-smooth); overflow: visible;
     }
     .card:hover { border-color: rgba(255, 255, 255, 0.15); }
     .card-title { font-size: 1.25rem; font-weight: 800; margin-bottom: 6px; letter-spacing: -0.01em; }
@@ -180,6 +180,36 @@
       background-repeat: no-repeat; background-position: right 1.2rem center; background-size: 1.1em; padding-right: 2.8rem;
     }
     textarea.form-control { resize: vertical; min-height: 120px; line-height: 1.6; }
+
+    /* Password Input Container with Peek Feature */
+    .password-wrapper {
+      position: relative;
+      display: flex;
+      align-items: center;
+      width: 100%;
+    }
+    .password-wrapper .form-control {
+      padding-right: 48px;
+    }
+    .peek-btn {
+      position: absolute;
+      right: 12px;
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      cursor: pointer;
+      font-size: 1.1rem;
+      padding: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: var(--transition-smooth);
+      user-select: none;
+    }
+    .peek-btn:hover {
+      color: #fff;
+    }
+
     .btn {
       background: linear-gradient(135deg, var(--primary), var(--primary-hover)); color: white; border: none; padding: 14px 28px; border-radius: var(--radius-md);
       font-weight: 700; font-size: 0.95rem; cursor: pointer; transition: var(--transition-smooth);
@@ -191,12 +221,12 @@
     .btn-secondary { background: rgba(255, 255, 255, 0.06); color: var(--text-main); border: 1px solid var(--glass-border); box-shadow: none; }
     .btn-secondary:hover, .btn-secondary:active { background: rgba(255, 255, 255, 0.12); border-color: rgba(255, 255, 255, 0.2); box-shadow: 0 6px 15px rgba(0,0,0,0.2); }
 
-    /* Search Container Stack Elevation & Dropdown Crop Fix */
-    .search-card-container { position: relative; z-index: 50; overflow: visible !important; }
-    .search-box { position: relative; width: 100%; z-index: 100; }
+    /* Search Container Stack Elevation & Dropdown Fix for Overlaying Content Completely */
+    .search-card-container { position: relative; z-index: 900 !important; overflow: visible !important; }
+    .search-box { position: relative; width: 100%; z-index: 950; }
     .search-results {
       position: absolute; top: calc(100% + 8px); left: 0; right: 0; background: rgba(15, 23, 42, 0.98); border: 1px solid var(--glass-border);
-      border-radius: var(--radius-lg); max-height: 380px; overflow-y: auto; z-index: 99999;
+      border-radius: var(--radius-lg); max-height: 380px; overflow-y: auto; z-index: 999999 !important;
       box-shadow: 0 25px 60px rgba(0,0,0,0.95), 0 0 25px rgba(99, 102, 241, 0.3); display: none; backdrop-filter: blur(30px); -webkit-backdrop-filter: blur(30px);
     }
     .search-results.active { display: block; animation: fadeIn 0.2s ease-out; }
@@ -208,6 +238,7 @@
     .policy-tag { font-size: 0.7rem; padding: 2px 8px; border-radius: 4px; font-weight: 700; text-transform: uppercase; margin-left: 6px; display: inline-block; }
     .tag-blind { background: rgba(16, 185, 129, 0.2); color: #34d399; border: 1px solid rgba(16, 185, 129, 0.4); }
     .tag-aware { background: rgba(245, 158, 11, 0.2); color: #fbbf24; border: 1px solid rgba(245, 158, 11, 0.4); }
+    .tag-merit { background: rgba(6, 182, 212, 0.2); color: #38bdf8; border: 1px solid rgba(6, 182, 212, 0.4); }
 
     /* Comparison Box */
     .cds-comparison-grid {
@@ -316,7 +347,10 @@
         </div>
         <div class="form-group" style="margin-bottom: 24px;">
           <label>Password</label>
-          <input type="password" class="form-control" id="authPassword" placeholder="••••••••" required>
+          <div class="password-wrapper">
+            <input type="password" class="form-control" id="authPassword" placeholder="••••••••" required>
+            <button type="button" class="peek-btn" onclick="togglePasswordVisibility('authPassword', this)" title="Toggle Password Visibility">👁️</button>
+          </div>
         </div>
         <button type="submit" class="btn" style="width: 100%;" id="authSubmitBtn">Sign In</button>
       </form>
@@ -408,7 +442,10 @@
                 </div>
                 <div class="form-group">
                   <label>Saved Account Password</label>
-                  <input type="password" class="form-control" id="profPassword" placeholder="••••••••">
+                  <div class="password-wrapper">
+                    <input type="password" class="form-control" id="profPassword" placeholder="••••••••">
+                    <button type="button" class="peek-btn" onclick="togglePasswordVisibility('profPassword', this)" title="Toggle Password Visibility">👁️</button>
+                  </div>
                 </div>
               </div>
             </div>
@@ -478,63 +515,50 @@
           </div>
         </form>
       </div>
-
-      <div class="card">
-        <div class="card-title">📊 Common Data Set (CDS) Benchmarker</div>
-        <div class="card-subtitle">Compare your GPA, SAT/ACT, and extracurricular profile directly against official CDS institutional datasets for top US universities.</div>
-        
-        <div class="form-group">
-          <label>Select School for CDS Comparison</label>
-          <select class="form-control" id="cdsSelectSchool" onchange="runCDSComparison()">
-            </select>
-        </div>
-
-        <div id="cdsComparisonResults">
-          </div>
-      </div>
     </section>
 
     <section class="view-panel" id="view-colleges">
       <div class="card search-card-container">
         <div class="card-title">🔍 Search U.S. Higher Education Registry</div>
-        <div class="card-subtitle">Fast offline search engine covering top 50+ U.S. universities with advanced filters for institutional type, admissions policy, average grant packages, and holistic odds classification.</div>
+        <div class="card-subtitle">Fast offline search engine covering top 50+ U.S. universities with advanced filters for institutional type, admissions policy, max grant coverage, and holistic odds category.</div>
         
         <div class="form-grid" style="margin-bottom: 18px;">
           <div class="form-group">
-            <label>Institution Type</label>
+            <label>1. Institution Type</label>
             <select class="form-control" id="filterType" onchange="handleFilteredSearch()">
-              <option value="all">All Types (Private & Public)</option>
-              <option value="Private">Private Only</option>
+              <option value="all">All Types (Public & Private)</option>
               <option value="Public">Public Only</option>
+              <option value="Private">Private Only</option>
             </select>
           </div>
 
           <div class="form-group">
-            <label>Admissions Policy (Need Status)</label>
-            <select class="form-control" id="filterPolicy" onchange="handleFilteredSearch()">
-              <option value="all">All Policies (Need-Blind & Need-Aware)</option>
-              <option value="Need-Blind">Need-Blind Only</option>
-              <option value="Need-Aware">Need-Aware Only</option>
-            </select>
-          </div>
-
-          <div class="form-group">
-            <label>Financial Aid Coverage (% Aid Awarded)</label>
-            <select class="form-control" id="filterAid" onchange="handleFilteredSearch()">
-              <option value="0">Any Financial Aid Level</option>
-              <option value="50">50%+ Students Receive Need Aid</option>
-              <option value="60">60%+ Students Receive Need Aid</option>
-              <option value="70">70%+ High Coverage Need Aid</option>
-            </select>
-          </div>
-
-          <div class="form-group">
-            <label>Admissions Category (Calculated)</label>
+            <label>2. Admission Category</label>
             <select class="form-control" id="filterCategory" onchange="handleFilteredSearch()">
               <option value="all">All Categories (Safety, Target, Reach)</option>
               <option value="Safety">Safety Only</option>
               <option value="Target">Target Only</option>
               <option value="Reach">Reach Only</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label>3. Max Financial Aid Cap (% Aid Recipient Cap)</label>
+            <select class="form-control" id="filterAid" onchange="handleFilteredSearch()">
+              <option value="100">Up to 100% Aid Coverage</option>
+              <option value="60">Max 60% Aid Coverage</option>
+              <option value="55">Max 55% Aid Coverage</option>
+              <option value="50">Max 50% Aid Coverage</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label>4. Financial Aid Type Policy</label>
+            <select class="form-control" id="filterPolicy" onchange="handleFilteredSearch()">
+              <option value="all">All Aid Policies (Need-Blind, Need-Aware, Merit-Based)</option>
+              <option value="Need-Blind">Need-Blind</option>
+              <option value="Need-Aware">Need-Aware</option>
+              <option value="Merit-Based">Merit-Based</option>
             </select>
           </div>
         </div>
@@ -567,6 +591,20 @@
           </table>
         </div>
       </div>
+
+      <div class="card" style="z-index: 1;">
+        <div class="card-title">📊 Common Data Set (CDS) Benchmarker</div>
+        <div class="card-subtitle">Compare your GPA, SAT/ACT, and extracurricular profile directly against official CDS institutional datasets for top US universities.</div>
+        
+        <div class="form-group">
+          <label>Select School for CDS Comparison</label>
+          <select class="form-control" id="cdsSelectSchool" onchange="runCDSComparison()">
+            </select>
+        </div>
+
+        <div id="cdsComparisonResults">
+          </div>
+      </div>
     </section>
 
   </main>
@@ -595,15 +633,15 @@
       { name: "Carnegie Mellon University", type: "Private", policy: "Need-Aware", location: "Pittsburgh, PA", acceptRate: 11.0, sat25: 1500, sat75: 1570, act25: 34, act75: 35, finAidPercent: 48, avgAidPackage: "$44,200", fullNeedMet: false, avgGpa: 3.89, csRating: "10/10", entRating: "8/10" },
       { name: "University of California, Berkeley", type: "Public", policy: "Need-Blind", location: "Berkeley, CA", acceptRate: 11.4, sat25: 1410, sat75: 1540, act25: 31, act75: 35, finAidPercent: 57, avgAidPackage: "$23,500", fullNeedMet: false, avgGpa: 3.89, csRating: "10/10", entRating: "9/10" },
       { name: "University of California, Los Angeles (UCLA)", type: "Public", policy: "Need-Blind", location: "Los Angeles, CA", acceptRate: 8.8, sat25: 1400, sat75: 1530, act25: 30, act75: 34, finAidPercent: 55, avgAidPackage: "$22,800", fullNeedMet: false, avgGpa: 3.90, csRating: "9.5/10", entRating: "8.5/10" },
-      { name: "Georgia Institute of Technology", type: "Public", policy: "Need-Blind", location: "Atlanta, GA", acceptRate: 16.0, sat25: 1370, sat75: 1530, act25: 31, act75: 35, finAidPercent: 45, avgAidPackage: "$14,200", fullNeedMet: false, avgGpa: 3.85, csRating: "9.5/10", entRating: "8/10" },
+      { name: "Georgia Institute of Technology", type: "Public", policy: "Merit-Based", location: "Atlanta, GA", acceptRate: 16.0, sat25: 1370, sat75: 1530, act25: 31, act75: 35, finAidPercent: 45, avgAidPackage: "$14,200", fullNeedMet: false, avgGpa: 3.85, csRating: "9.5/10", entRating: "8/10" },
       { name: "University of Michigan, Ann Arbor", type: "Public", policy: "Need-Blind", location: "Ann Arbor, MI", acceptRate: 17.7, sat25: 1350, sat75: 1530, act25: 31, act75: 34, finAidPercent: 52, avgAidPackage: "$21,000", fullNeedMet: false, avgGpa: 3.90, csRating: "9/10", entRating: "8/10" },
       { name: "New York University (NYU)", type: "Private", policy: "Need-Aware", location: "New York, NY", acceptRate: 12.0, sat25: 1470, sat75: 1570, act25: 33, act75: 35, finAidPercent: 51, avgAidPackage: "$40,500", fullNeedMet: true, avgGpa: 3.80, csRating: "8.5/10", entRating: "9/10" },
       { name: "Williams College", type: "Private", policy: "Need-Blind", location: "Williamstown, MA", acceptRate: 8.0, sat25: 1490, sat75: 1560, act25: 33, act75: 35, finAidPercent: 58, avgAidPackage: "$65,000", fullNeedMet: true, avgGpa: 3.94, csRating: "8.5/10", entRating: "7.5/10" },
       { name: "Bowdoin College", type: "Private", policy: "Need-Blind", location: "Brunswick, ME", acceptRate: 8.5, sat25: 1440, sat75: 1540, act25: 32, act75: 34, finAidPercent: 52, avgAidPackage: "$58,100", fullNeedMet: true, avgGpa: 3.90, csRating: "8/10", entRating: "7/10" },
       { name: "Swarthmore College", type: "Private", policy: "Need-Blind", location: "Swarthmore, PA", acceptRate: 6.9, sat25: 1470, sat75: 1560, act25: 33, act75: 35, finAidPercent: 56, avgAidPackage: "$62,300", fullNeedMet: true, avgGpa: 3.92, csRating: "8.5/10", entRating: "7.5/10" },
-      { name: "Purdue University", type: "Public", policy: "Need-Blind", location: "West Lafayette, IN", acceptRate: 52.7, sat25: 1210, sat75: 1440, act25: 27, act75: 34, finAidPercent: 42, avgAidPackage: "$11,500", fullNeedMet: false, avgGpa: 3.74, csRating: "8.5/10", entRating: "7.5/10" },
-      { name: "Univ. of Illinois Urbana-Champaign", type: "Public", policy: "Need-Blind", location: "Urbana, IL", acceptRate: 44.8, sat25: 1330, sat75: 1530, act25: 29, act75: 34, finAidPercent: 48, avgAidPackage: "$15,800", fullNeedMet: false, avgGpa: 3.80, csRating: "9.5/10", entRating: "7.5/10" },
-      { name: "UT Austin", type: "Public", policy: "Need-Blind", location: "Austin, TX", acceptRate: 29.0, sat25: 1240, sat75: 1470, act25: 28, act75: 33, finAidPercent: 46, avgAidPackage: "$12,900", fullNeedMet: false, avgGpa: 3.84, csRating: "9/10", entRating: "8.5/10" },
+      { name: "Purdue University", type: "Public", policy: "Merit-Based", location: "West Lafayette, IN", acceptRate: 52.7, sat25: 1210, sat75: 1440, act25: 27, act75: 34, finAidPercent: 42, avgAidPackage: "$11,500", fullNeedMet: false, avgGpa: 3.74, csRating: "8.5/10", entRating: "7.5/10" },
+      { name: "Univ. of Illinois Urbana-Champaign", type: "Public", policy: "Merit-Based", location: "Urbana, IL", acceptRate: 44.8, sat25: 1330, sat75: 1530, act25: 29, act75: 34, finAidPercent: 48, avgAidPackage: "$15,800", fullNeedMet: false, avgGpa: 3.80, csRating: "9.5/10", entRating: "7.5/10" },
+      { name: "UT Austin", type: "Public", policy: "Merit-Based", location: "Austin, TX", acceptRate: 29.0, sat25: 1240, sat75: 1470, act25: 28, act75: 33, finAidPercent: 46, avgAidPackage: "$12,900", fullNeedMet: false, avgGpa: 3.84, csRating: "9/10", entRating: "8.5/10" },
       { name: "University of Washington", type: "Public", policy: "Need-Blind", location: "Seattle, WA", acceptRate: 47.5, sat25: 1220, sat75: 1470, act25: 27, act75: 33, finAidPercent: 42, avgAidPackage: "$14,500", fullNeedMet: false, avgGpa: 3.80, csRating: "9/10", entRating: "7/10" },
       { name: "Boston University", type: "Private", policy: "Need-Aware", location: "Boston, MA", acceptRate: 14.0, sat25: 1380, sat75: 1510, act25: 31, act75: 34, finAidPercent: 49, avgAidPackage: "$42,000", fullNeedMet: true, avgGpa: 3.82, csRating: "8/10", entRating: "8/10" }
     ];
@@ -634,6 +672,17 @@
     function toggleDrawer() {
       document.getElementById('drawer').classList.toggle('active');
       document.getElementById('drawerOverlay').classList.toggle('active');
+    }
+
+    function togglePasswordVisibility(inputId, btn) {
+      const input = document.getElementById(inputId);
+      if (input.type === "password") {
+        input.type = "text";
+        btn.innerText = "🙈";
+      } else {
+        input.type = "password";
+        btn.innerText = "👁️";
+      }
     }
 
     function switchView(viewId) {
@@ -730,7 +779,7 @@
       let category = "Target";
       let badgeClass = "badge-target";
 
-      // Super selective schools (<12% Acceptance Rate) are ALWAYS Reach unless exceptionally qualified
+      // Super selective schools (<10% Acceptance Rate) are ALWAYS Reach unless exceptionally qualified
       if (uni.acceptRate < 10) {
         category = "Reach";
         badgeClass = "badge-reach";
@@ -748,16 +797,17 @@
       return { odds, category, badgeClass };
     }
 
-    // SEARCH & FILTER ENGINE WITH FIXES FOR CROP AND ADVANCED AID/POLICY FILTERS
+    // SEARCH & FILTER ENGINE WITH ALL REQUIRED EXPLICIT FILTERS AND TOP STACKING
     function handleFilteredSearch() {
       const resultsContainer = document.getElementById('searchResults');
       const query = document.getElementById('collegeSearchInput').value.trim().toLowerCase();
+      
       const typeFilter = document.getElementById('filterType').value;
-      const policyFilter = document.getElementById('filterPolicy').value;
       const catFilter = document.getElementById('filterCategory').value;
-      const aidFilter = parseInt(document.getElementById('filterAid').value);
+      const maxAidFilter = parseInt(document.getElementById('filterAid').value);
+      const policyFilter = document.getElementById('filterPolicy').value;
 
-      if (!query && typeFilter === 'all' && policyFilter === 'all' && catFilter === 'all' && aidFilter === 0) {
+      if (!query && typeFilter === 'all' && policyFilter === 'all' && catFilter === 'all' && maxAidFilter === 100) {
         resultsContainer.classList.remove('active');
         return;
       }
@@ -766,7 +816,9 @@
         const matchesQuery = !query || uni.name.toLowerCase().includes(query) || uni.location.toLowerCase().includes(query);
         const matchesType = typeFilter === 'all' || uni.type === typeFilter;
         const matchesPolicy = policyFilter === 'all' || uni.policy === policyFilter;
-        const matchesAid = uni.finAidPercent >= aidFilter;
+        
+        // Filter by MAX Financial Aid Cap (Percentage receiving aid <= max limit selected)
+        const matchesAid = uni.finAidPercent <= maxAidFilter;
 
         const oddsRes = calculateUniversityOdds(uni);
         const matchesCat = catFilter === 'all' || oddsRes.category === catFilter;
@@ -776,11 +828,15 @@
 
       resultsContainer.innerHTML = '';
       if (matches.length === 0) {
-        resultsContainer.innerHTML = `<div class="search-item"><span style="color:var(--text-muted)">No matching institutions found. Try adjusting your filters.</span></div>`;
+        resultsContainer.innerHTML = `<div class="search-item"><span style="color:var(--text-muted)">No matching institutions found with specified criteria. Try adjusting filters.</span></div>`;
       } else {
         matches.forEach(uni => {
           const evalRes = calculateUniversityOdds(uni);
-          const policyClass = uni.policy === 'Need-Blind' ? 'tag-blind' : 'tag-aware';
+          
+          let policyClass = 'tag-blind';
+          if (uni.policy === 'Need-Aware') policyClass = 'tag-aware';
+          if (uni.policy === 'Merit-Based') policyClass = 'tag-merit';
+
           const item = document.createElement('div');
           item.className = 'search-item';
           item.innerHTML = `
@@ -788,8 +844,9 @@
               <div>
                 <strong style="color:#fff; font-size:0.98rem;">${uni.name}</strong> 
                 <span class="policy-tag ${policyClass}">${uni.policy}</span>
+                <span style="font-size: 0.72rem; color: var(--text-subtle); font-weight:700; margin-left: 6px;">(${uni.type})</span>
                 <div style="font-size:0.8rem; color:var(--text-muted); margin-top:5px;">
-                  Avg Grant: <strong style="color:#a5b4fc;">${uni.avgAidPackage}</strong> | Aid Awarded: ${uni.finAidPercent}% | SAT: ${uni.sat25}-${uni.sat75}
+                  Avg Grant: <strong style="color:#a5b4fc;">${uni.avgAidPackage}</strong> | Recipients: ${uni.finAidPercent}% | SAT: ${uni.sat25}-${uni.sat75}
                 </div>
               </div>
               <span class="badge ${evalRes.badgeClass}">${evalRes.category}</span>
@@ -820,6 +877,7 @@
 
     function populateCDSSchoolSelect() {
       const select = document.getElementById('cdsSelectSchool');
+      if(!select) return;
       select.innerHTML = '';
       US_COLLEGES_DATABASE.forEach(uni => {
         const opt = document.createElement('option');
@@ -831,11 +889,13 @@
     }
 
     function runCDSComparison() {
-      const selectedName = document.getElementById('cdsSelectSchool').value;
+      const select = document.getElementById('cdsSelectSchool');
+      if(!select) return;
+      const selectedName = select.value;
       const uni = US_COLLEGES_DATABASE.find(u => u.name === selectedName);
       const container = document.getElementById('cdsComparisonResults');
 
-      if (!uni) return;
+      if (!uni || !container) return;
 
       const evalRes = calculateUniversityOdds(uni);
 
@@ -904,6 +964,7 @@
 
     function renderActivities() {
       const container = document.getElementById('activitiesList');
+      if(!container) return;
       container.innerHTML = '';
       profileState.activities.forEach((act, idx) => {
         const div = document.createElement('div');
@@ -928,7 +989,8 @@
         `;
         container.appendChild(div);
       });
-      document.getElementById('addActivityBtn').style.display = profileState.activities.length >= 10 ? 'none' : 'inline-flex';
+      const addBtn = document.getElementById('addActivityBtn');
+      if(addBtn) addBtn.style.display = profileState.activities.length >= 10 ? 'none' : 'inline-flex';
     }
 
     function addActivity() { if(profileState.activities.length < 10) { profileState.activities.push({title:'', org:'', description:'', tier:'3'}); renderActivities(); } }
@@ -941,15 +1003,15 @@
     }
 
     function renderAll() {
-      document.getElementById('profEmail').value = profileState.email || 'student@school.edu';
-      document.getElementById('profPassword').value = profileState.password || '';
-      document.getElementById('profGpa').value = profileState.gpa;
-      document.getElementById('profRigor').value = profileState.rigor;
-      document.getElementById('profSatOption').value = profileState.satOption;
-      document.getElementById('profSat').value = profileState.sat || '';
-      document.getElementById('profActOption').value = profileState.actOption;
-      document.getElementById('profAct').value = profileState.act || '';
-      document.getElementById('lorText').value = profileState.lorText || '';
+      if(document.getElementById('profEmail')) document.getElementById('profEmail').value = profileState.email || 'student@school.edu';
+      if(document.getElementById('profPassword')) document.getElementById('profPassword').value = profileState.password || '';
+      if(document.getElementById('profGpa')) document.getElementById('profGpa').value = profileState.gpa;
+      if(document.getElementById('profRigor')) document.getElementById('profRigor').value = profileState.rigor;
+      if(document.getElementById('profSatOption')) document.getElementById('profSatOption').value = profileState.satOption;
+      if(document.getElementById('profSat')) document.getElementById('profSat').value = profileState.sat || '';
+      if(document.getElementById('profActOption')) document.getElementById('profActOption').value = profileState.actOption;
+      if(document.getElementById('profAct')) document.getElementById('profAct').value = profileState.act || '';
+      if(document.getElementById('lorText')) document.getElementById('lorText').value = profileState.lorText || '';
       
       toggleTestInput('sat'); 
       toggleTestInput('act'); 
@@ -959,69 +1021,78 @@
 
       // Dashboard Table Rendering
       const dashBody = document.getElementById('dashboardTableBody');
-      dashBody.innerHTML = '';
-      let s = 0, t = 0, r = 0;
+      if(dashBody) {
+        dashBody.innerHTML = '';
+        let s = 0, t = 0, r = 0;
 
-      selectedColleges.forEach(col => {
-        const uni = US_COLLEGES_DATABASE.find(u => u.name === col.name) || { type: "Private", policy: "Need-Blind", location: "USA", acceptRate: 15, finAidPercent: 50, avgAidPackage: "$50,000" };
-        const evalRes = calculateUniversityOdds(uni);
+        selectedColleges.forEach(col => {
+          const uni = US_COLLEGES_DATABASE.find(u => u.name === col.name) || { type: "Private", policy: "Need-Blind", location: "USA", acceptRate: 15, finAidPercent: 50, avgAidPackage: "$50,000" };
+          const evalRes = calculateUniversityOdds(uni);
 
-        if(evalRes.category === 'Safety') s++; if(evalRes.category === 'Target') t++; if(evalRes.category === 'Reach') r++;
+          if(evalRes.category === 'Safety') s++; if(evalRes.category === 'Target') t++; if(evalRes.category === 'Reach') r++;
 
-        const policyClass = uni.policy === 'Need-Blind' ? 'tag-blind' : 'tag-aware';
+          let policyClass = 'tag-blind';
+          if (uni.policy === 'Need-Aware') policyClass = 'tag-aware';
+          if (uni.policy === 'Merit-Based') policyClass = 'tag-merit';
 
-        const tr = document.createElement('tr');
-        tr.innerHTML = `
-          <td><strong style="color:#fff; font-size:0.92rem;">${uni.name}</strong></td>
-          <td><small style="color:var(--text-muted);">${uni.type}</small> <span class="policy-tag ${policyClass}">${uni.policy}</span></td>
-          <td><strong style="color:#a5b4fc;">${uni.avgAidPackage}</strong> <small style="color:var(--text-muted);">(${uni.finAidPercent}%)</small></td>
-          <td><strong style="font-size:1.05rem;">${evalRes.odds}%</strong></td>
-          <td><span class="badge ${evalRes.badgeClass}">${evalRes.category}</span></td>
-          <td><span style="color:var(--primary); font-weight:700;">${col.status}</span></td>
-          <td>${col.status === 'Submitted' ? `<strong style="color:#34d399;">${col.outcome}</strong>` : `<span style="color:var(--text-subtle);">Pending</span>`}</td>
-        `;
-        dashBody.appendChild(tr);
-      });
+          const tr = document.createElement('tr');
+          tr.innerHTML = `
+            <td><strong style="color:#fff; font-size:0.92rem;">${uni.name}</strong></td>
+            <td><small style="color:var(--text-muted);">${uni.type}</small> <span class="policy-tag ${policyClass}">${uni.policy}</span></td>
+            <td><strong style="color:#a5b4fc;">${uni.avgAidPackage}</strong> <small style="color:var(--text-muted);">(${uni.finAidPercent}%)</small></td>
+            <td><strong style="font-size:1.05rem;">${evalRes.odds}%</strong></td>
+            <td><span class="badge ${evalRes.badgeClass}">${evalRes.category}</span></td>
+            <td><span style="color:var(--primary); font-weight:700;">${col.status}</span></td>
+            <td>${col.status === 'Submitted' ? `<strong style="color:#34d399;">${col.outcome}</strong>` : `<span style="color:var(--text-subtle);">Pending</span>`}</td>
+          `;
+          dashBody.appendChild(tr);
+        });
 
-      document.getElementById('statTotal').innerText = selectedColleges.length;
-      document.getElementById('statSafety').innerText = s;
-      document.getElementById('statTarget').innerText = t;
-      document.getElementById('statReach').innerText = r;
+        document.getElementById('statTotal').innerText = selectedColleges.length;
+        document.getElementById('statSafety').innerText = s;
+        document.getElementById('statTarget').innerText = t;
+        document.getElementById('statReach').innerText = r;
+      }
 
       // My Colleges Manager Table Rendering
       const mgrBody = document.getElementById('collegesManagerTableBody');
-      mgrBody.innerHTML = '';
-      selectedColleges.forEach(col => {
-        const uni = US_COLLEGES_DATABASE.find(u => u.name === col.name) || { type: "Private", policy: "Need-Blind", location: "USA", finAidPercent: 50, avgAidPackage: "$50,000" };
-        const policyClass = uni.policy === 'Need-Blind' ? 'tag-blind' : 'tag-aware';
+      if(mgrBody) {
+        mgrBody.innerHTML = '';
+        selectedColleges.forEach(col => {
+          const uni = US_COLLEGES_DATABASE.find(u => u.name === col.name) || { type: "Private", policy: "Need-Blind", location: "USA", finAidPercent: 50, avgAidPackage: "$50,000" };
+          
+          let policyClass = 'tag-blind';
+          if (uni.policy === 'Need-Aware') policyClass = 'tag-aware';
+          if (uni.policy === 'Merit-Based') policyClass = 'tag-merit';
 
-        const tr = document.createElement('tr');
-        tr.innerHTML = `
-          <td><strong style="color:#fff; font-size:0.92rem;">${col.name}</strong></td>
-          <td><small style="color:var(--text-muted);">${uni.type}</small> <span class="policy-tag ${policyClass}">${uni.policy}</span></td>
-          <td><strong style="color:#a5b4fc;">${uni.avgAidPackage}</strong> <small style="color:var(--text-muted);">(${uni.finAidPercent}%)</small></td>
-          <td>
-            <select class="form-control" style="padding: 8px 12px; font-size: 0.85rem; min-height: 40px;" onchange="updateCollegeStatus('${col.name}', this.value)">
-              <option value="Not Started" ${col.status === 'Not Started' ? 'selected' : ''}>Not Started</option>
-              <option value="In Progress" ${col.status === 'In Progress' ? 'selected' : ''}>In Progress</option>
-              <option value="Submitted" ${col.status === 'Submitted' ? 'selected' : ''}>Submitted</option>
-            </select>
-          </td>
-          <td>
-            ${col.status === 'Submitted' ? `
-              <select class="form-control" style="padding: 8px 12px; font-size: 0.85rem; min-height: 40px;" onchange="updateCollegeOutcome('${col.name}', this.value)">
-                <option value="Awaiting Feedback" ${col.outcome === 'Awaiting Feedback' ? 'selected' : ''}>Awaiting Feedback</option>
-                <option value="Accepted" ${col.outcome === 'Accepted' ? 'selected' : ''}>Accepted</option>
-                <option value="Waitlisted" ${col.outcome === 'Waitlisted' ? 'selected' : ''}>Waitlisted</option>
-                <option value="Deferred" ${col.outcome === 'Deferred' ? 'selected' : ''}>Deferred</option>
-                <option value="Rejected" ${col.outcome === 'Rejected' ? 'selected' : ''}>Rejected</option>
+          const tr = document.createElement('tr');
+          tr.innerHTML = `
+            <td><strong style="color:#fff; font-size:0.92rem;">${col.name}</strong></td>
+            <td><small style="color:var(--text-muted);">${uni.type}</small> <span class="policy-tag ${policyClass}">${uni.policy}</span></td>
+            <td><strong style="color:#a5b4fc;">${uni.avgAidPackage}</strong> <small style="color:var(--text-muted);">(${uni.finAidPercent}%)</small></td>
+            <td>
+              <select class="form-control" style="padding: 8px 12px; font-size: 0.85rem; min-height: 40px;" onchange="updateCollegeStatus('${col.name}', this.value)">
+                <option value="Not Started" ${col.status === 'Not Started' ? 'selected' : ''}>Not Started</option>
+                <option value="In Progress" ${col.status === 'In Progress' ? 'selected' : ''}>In Progress</option>
+                <option value="Submitted" ${col.status === 'Submitted' ? 'selected' : ''}>Submitted</option>
               </select>
-            ` : `<small style="color: var(--text-subtle);">N/A</small>`}
-          </td>
-          <td><button style="color:var(--danger); border:none; background:none; cursor:pointer; font-size:1.1rem; font-weight:700; padding: 6px;" onclick="removeCollege('${col.name}')">✕</button></td>
-        `;
-        mgrBody.appendChild(tr);
-      });
+            </td>
+            <td>
+              ${col.status === 'Submitted' ? `
+                <select class="form-control" style="padding: 8px 12px; font-size: 0.85rem; min-height: 40px;" onchange="updateCollegeOutcome('${col.name}', this.value)">
+                  <option value="Awaiting Feedback" ${col.outcome === 'Awaiting Feedback' ? 'selected' : ''}>Awaiting Feedback</option>
+                  <option value="Accepted" ${col.outcome === 'Accepted' ? 'selected' : ''}>Accepted</option>
+                  <option value="Waitlisted" ${col.outcome === 'Waitlisted' ? 'selected' : ''}>Waitlisted</option>
+                  <option value="Deferred" ${col.outcome === 'Deferred' ? 'selected' : ''}>Deferred</option>
+                  <option value="Rejected" ${col.outcome === 'Rejected' ? 'selected' : ''}>Rejected</option>
+                </select>
+              ` : `<small style="color: var(--text-subtle);">N/A</small>`}
+            </td>
+            <td><button style="color:var(--danger); border:none; background:none; cursor:pointer; font-size:1.1rem; font-weight:700; padding: 6px;" onclick="removeCollege('${col.name}')">✕</button></td>
+          `;
+          mgrBody.appendChild(tr);
+        });
+      }
     }
 
     function updateCollegeStatus(name, val) {
