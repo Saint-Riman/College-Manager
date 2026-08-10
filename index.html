@@ -40,6 +40,7 @@
       -webkit-tap-highlight-color: transparent;
     }
 
+    /* Custom Scrollbar */
     ::-webkit-scrollbar { width: 6px; height: 6px; }
     ::-webkit-scrollbar-track { background: var(--bg-dark); }
     ::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.18); border-radius: 4px; }
@@ -60,6 +61,7 @@
       background-attachment: fixed;
     }
 
+    /* Auth Overlay */
     .auth-container {
       position: fixed; inset: 0; background: rgba(7, 9, 14, 0.95); backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px); z-index: 1000;
       display: flex; align-items: center; justify-content: center; padding: 16px; transition: var(--transition-smooth);
@@ -89,6 +91,7 @@
     }
     .auth-tab.active { background: var(--primary); color: #fff; box-shadow: 0 4px 12px var(--primary-glow); }
 
+    /* Header & Navigation */
     .app-header {
       display: flex; justify-content: space-between; align-items: center; padding: 16px 32px;
       background: var(--glass-bg); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border-bottom: 1px solid var(--glass-border);
@@ -110,6 +113,7 @@
     .hamburger-btn:hover, .hamburger-btn:active { background: rgba(255, 255, 255, 0.1); border-color: rgba(255, 255, 255, 0.2); }
     .hamburger-btn span { width: 22px; height: 2px; background-color: var(--text-main); border-radius: 2px; transition: var(--transition-smooth); }
 
+    /* Drawer */
     .drawer-overlay {
       position: fixed; inset: 0; background: rgba(0,0,0,0.75); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); z-index: 200;
       opacity: 0; pointer-events: none; transition: var(--transition-smooth);
@@ -140,6 +144,7 @@
     .nav-item.logout { margin-top: auto; color: #f87171; background: rgba(239, 68, 68, 0.08); border-color: rgba(239, 68, 68, 0.2); }
     .nav-item.logout:hover, .nav-item.logout:active { background: rgba(239, 68, 68, 0.18); color: #fff; }
 
+    /* Layout & Cards */
     .main-container { max-width: 1380px; margin: 0 auto; padding: 32px 24px; width: 100%; flex: 1; position: relative; }
     .view-panel { display: none; animation: fadeIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards; position: relative; }
     .view-panel.active { display: block; }
@@ -158,6 +163,7 @@
     .card-title { font-size: 1.25rem; font-weight: 800; margin-bottom: 6px; letter-spacing: -0.01em; }
     .card-subtitle { color: var(--text-muted); font-size: 0.88rem; margin-bottom: 24px; line-height: 1.5; }
 
+    /* Forms & Controls */
     .form-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 20px; }
     .form-group { display: flex; flex-direction: column; gap: 8px; position: relative; }
     .form-group.full-width { grid-column: 1 / -1; }
@@ -175,6 +181,7 @@
     }
     textarea.form-control { resize: vertical; min-height: 120px; line-height: 1.6; }
 
+    /* Password Input Container with Peek Feature */
     .password-wrapper {
       position: relative;
       display: flex;
@@ -214,6 +221,7 @@
     .btn-secondary { background: rgba(255, 255, 255, 0.06); color: var(--text-main); border: 1px solid var(--glass-border); box-shadow: none; }
     .btn-secondary:hover, .btn-secondary:active { background: rgba(255, 255, 255, 0.12); border-color: rgba(255, 255, 255, 0.2); box-shadow: 0 6px 15px rgba(0,0,0,0.2); }
 
+    /* Search Container Stack Elevation & Dropdown Fix for Overlaying Content Completely */
     .search-card-container { position: relative; z-index: 900 !important; overflow: visible !important; }
     .search-box { position: relative; width: 100%; z-index: 950; }
     .search-results {
@@ -226,11 +234,13 @@
     .search-item:last-child { border-bottom: none; }
     .search-item:hover, .search-item:active { background: rgba(99, 102, 241, 0.22); }
 
+    /* Policy & Aid Tags */
     .policy-tag { font-size: 0.7rem; padding: 2px 8px; border-radius: 4px; font-weight: 700; text-transform: uppercase; margin-left: 6px; display: inline-block; }
     .tag-blind { background: rgba(16, 185, 129, 0.2); color: #34d399; border: 1px solid rgba(16, 185, 129, 0.4); }
     .tag-aware { background: rgba(245, 158, 11, 0.2); color: #fbbf24; border: 1px solid rgba(245, 158, 11, 0.4); }
     .tag-merit { background: rgba(6, 182, 212, 0.2); color: #38bdf8; border: 1px solid rgba(6, 182, 212, 0.4); }
 
+    /* Comparison Box */
     .cds-comparison-grid {
       display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 16px; margin-top: 20px;
     }
@@ -242,6 +252,7 @@
     .cds-metric-title { font-size: 0.72rem; color: var(--text-muted); font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; }
     .cds-metric-val { font-size: 1.15rem; font-weight: 800; margin-top: 8px; color: #a5b4fc; word-break: break-word; }
 
+    /* Tables & Stats */
     .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 20px; margin-bottom: 28px; }
     .stat-card {
       background: var(--bg-card); border: 1px solid var(--bg-card-border); border-radius: var(--radius-xl); padding: 24px; position: relative;
@@ -271,6 +282,7 @@
     .activity-card { background: rgba(7, 9, 14, 0.5); border: 1px solid var(--glass-border); border-radius: var(--radius-lg); padding: 18px; margin-bottom: 16px; transition: var(--transition-smooth); }
     .activity-card:hover { border-color: rgba(99, 102, 241, 0.3); }
 
+    /* Dynamic Mobile UX Optimizations */
     @media (max-width: 768px) {
       .app-header { padding: 14px 18px; }
       .brand-title { font-size: 1.1rem; }
@@ -426,12 +438,12 @@
               <div class="form-grid">
                 <div class="form-group">
                   <label>Saved Account Email</label>
-                  <input type="email" class="form-control" id="profEmail" required placeholder="student@school.edu" readonly>
+                  <input type="email" class="form-control" id="profEmail" required placeholder="student@school.edu">
                 </div>
                 <div class="form-group">
                   <label>Saved Account Password</label>
                   <div class="password-wrapper">
-                    <input type="password" class="form-control" id="profPassword" placeholder="••••••••" value="••••••••" readonly>
+                    <input type="password" class="form-control" id="profPassword" placeholder="••••••••">
                     <button type="button" class="peek-btn" onclick="togglePasswordVisibility('profPassword', this)" title="Toggle Password Visibility">👁️</button>
                   </div>
                 </div>
@@ -587,48 +599,22 @@
         <div class="form-group">
           <label>Select School for CDS Comparison</label>
           <select class="form-control" id="cdsSelectSchool" onchange="runCDSComparison()">
-          </select>
+            </select>
         </div>
 
-        <div id="cdsComparisonResults"></div>
+        <div id="cdsComparisonResults">
+          </div>
       </div>
     </section>
 
   </main>
 
-  <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-    import { 
-      getAuth, 
-      createUserWithEmailAndPassword, 
-      signInWithEmailAndPassword,
-      signOut,
-      onAuthStateChanged
-    } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
-    import { 
-      getFirestore, 
-      doc, 
-      setDoc, 
-      getDoc 
-    } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
-
-    const firebaseConfig = {
-      apiKey: "AIzaSyBUX4nsKqNQyRjUA6NCd_pbEJGQlbn7Vbw",
-      authDomain: "apexapply-69cd6.firebaseapp.com",
-      projectId: "apexapply-69cd6",
-      storageBucket: "apexapply-69cd6.firebasestorage.app",
-      messagingSenderId: "510755433251",
-      appId: "1:510755433251:web:1b33e2a9116636a6cd7a96",
-      measurementId: "G-CMLT4PGSN5"
-    };
-
-    const app = initializeApp(firebaseConfig);
-    const auth = getAuth(app);
-    const db = getFirestore(app);
-
+  <script>
     const EMBEDDED_API_KEY = "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";
 
+    // EXPANDED COMPREHENSIVE U.S. COLLEGE DATABASE COVERING PUBLIC, PRIVATE, LIBERAL ARTS & STATE FLAGSHIPS
     const US_COLLEGES_DATABASE = [
+      // IVY LEAGUE & TOP NATIONAL UNIVERSITIES
       { name: "Harvard University", type: "Private", policy: "Need-Blind", location: "Cambridge, MA", acceptRate: 3.4, sat25: 1490, sat75: 1580, act25: 34, act75: 36, finAidPercent: 55, avgAidPackage: "$64,500", fullNeedMet: true, avgGpa: 3.95, csRating: "9.5/10", entRating: "9.5/10" },
       { name: "Massachusetts Institute of Technology (MIT)", type: "Private", policy: "Need-Blind", location: "Cambridge, MA", acceptRate: 3.9, sat25: 1520, sat75: 1570, act25: 34, act75: 36, finAidPercent: 58, avgAidPackage: "$60,200", fullNeedMet: true, avgGpa: 3.96, csRating: "10/10", entRating: "10/10" },
       { name: "Stanford University", type: "Private", policy: "Need-Blind", location: "Stanford, CA", acceptRate: 3.9, sat25: 1500, sat75: 1580, act25: 34, act75: 36, finAidPercent: 55, avgAidPackage: "$62,000", fullNeedMet: true, avgGpa: 3.95, csRating: "10/10", entRating: "10/10" },
@@ -654,6 +640,8 @@
       { name: "New York University (NYU)", type: "Private", policy: "Need-Aware", location: "New York, NY", acceptRate: 12.0, sat25: 1470, sat75: 1570, act25: 33, act75: 35, finAidPercent: 51, avgAidPackage: "$40,500", fullNeedMet: true, avgGpa: 3.80, csRating: "8.5/10", entRating: "9/10" },
       { name: "University of Southern California (USC)", type: "Private", policy: "Need-Blind", location: "Los Angeles, CA", acceptRate: 11.9, sat25: 1410, sat75: 1540, act25: 32, act75: 35, finAidPercent: 60, avgAidPackage: "$45,000", fullNeedMet: true, avgGpa: 3.85, csRating: "8.5/10", entRating: "9/10" },
       { name: "Tufts University", type: "Private", policy: "Need-Blind", location: "Medford, MA", acceptRate: 10.0, sat25: 1440, sat75: 1540, act25: 33, act75: 35, finAidPercent: 44, avgAidPackage: "$51,000", fullNeedMet: true, avgGpa: 3.88, csRating: "8/10", entRating: "8/10" },
+
+      // TOP LIBERAL ARTS COLLEGES
       { name: "Williams College", type: "Private", policy: "Need-Blind", location: "Williamstown, MA", acceptRate: 8.0, sat25: 1490, sat75: 1560, act25: 33, act75: 35, finAidPercent: 58, avgAidPackage: "$65,000", fullNeedMet: true, avgGpa: 3.94, csRating: "8.5/10", entRating: "7.5/10" },
       { name: "Amherst College", type: "Private", policy: "Need-Blind", location: "Amherst, MA", acceptRate: 7.0, sat25: 1480, sat75: 1560, act25: 33, act75: 35, finAidPercent: 60, avgAidPackage: "$68,500", fullNeedMet: true, avgGpa: 3.92, csRating: "8.5/10", entRating: "7.5/10" },
       { name: "Swarthmore College", type: "Private", policy: "Need-Blind", location: "Swarthmore, PA", acceptRate: 6.9, sat25: 1470, sat75: 1560, act25: 33, act75: 35, finAidPercent: 56, avgAidPackage: "$62,300", fullNeedMet: true, avgGpa: 3.92, csRating: "8.5/10", entRating: "7.5/10" },
@@ -662,6 +650,8 @@
       { name: "Wellesley College", type: "Private", policy: "Need-Blind", location: "Wellesley, MA", acceptRate: 13.0, sat25: 1430, sat75: 1540, act25: 32, act75: 34, finAidPercent: 59, avgAidPackage: "$57,200", fullNeedMet: true, avgGpa: 3.88, csRating: "8/10", entRating: "7.5/10" },
       { name: "Middlebury College", type: "Private", policy: "Need-Blind", location: "Middlebury, VT", acceptRate: 13.0, sat25: 1420, sat75: 1530, act25: 32, act75: 34, finAidPercent: 50, avgAidPackage: "$56,000", fullNeedMet: true, avgGpa: 3.89, csRating: "7.5/10", entRating: "7/10" },
       { name: "Carleton College", type: "Private", policy: "Need-Blind", location: "Northfield, MN", acceptRate: 16.6, sat25: 1410, sat75: 1540, act25: 32, act75: 35, finAidPercent: 55, avgAidPackage: "$52,800", fullNeedMet: true, avgGpa: 3.87, csRating: "8/10", entRating: "7/10" },
+
+      // MAJOR PUBLIC FLAGSHIP UNIVERSITIES ACROSS ALL REGIONS
       { name: "University of California, Berkeley", type: "Public", policy: "Need-Blind", location: "Berkeley, CA", acceptRate: 11.4, sat25: 1410, sat75: 1540, act25: 31, act75: 35, finAidPercent: 57, avgAidPackage: "$23,500", fullNeedMet: false, avgGpa: 3.89, csRating: "10/10", entRating: "9/10" },
       { name: "University of California, Los Angeles (UCLA)", type: "Public", policy: "Need-Blind", location: "Los Angeles, CA", acceptRate: 8.8, sat25: 1400, sat75: 1530, act25: 30, act75: 34, finAidPercent: 55, avgAidPackage: "$22,800", fullNeedMet: false, avgGpa: 3.90, csRating: "9.5/10", entRating: "8.5/10" },
       { name: "University of Michigan, Ann Arbor", type: "Public", policy: "Need-Blind", location: "Ann Arbor, MI", acceptRate: 17.7, sat25: 1350, sat75: 1530, act25: 31, act75: 34, finAidPercent: 52, avgAidPackage: "$21,000", fullNeedMet: false, avgGpa: 3.90, csRating: "9/10", entRating: "8/10" },
@@ -680,6 +670,8 @@
       { name: "University of Georgia", type: "Public", policy: "Merit-Based", location: "Athens, GA", acceptRate: 40.0, sat25: 1270, sat75: 1450, act25: 28, act75: 33, finAidPercent: 52, avgAidPackage: "$10,500", fullNeedMet: false, avgGpa: 3.81, csRating: "7.5/10", entRating: "7/10" },
       { name: "Texas A&M University", type: "Public", policy: "Merit-Based", location: "College Station, TX", acceptRate: 63.0, sat25: 1160, sat75: 1380, act25: 25, act75: 31, finAidPercent: 51, avgAidPackage: "$11,000", fullNeedMet: false, avgGpa: 3.68, csRating: "8/10", entRating: "7.5/10" },
       { name: "Indiana University Bloomington", type: "Public", policy: "Merit-Based", location: "Bloomington, IN", acceptRate: 80.0, sat25: 1180, sat75: 1380, act25: 25, act75: 31, finAidPercent: 49, avgAidPackage: "$11,200", fullNeedMet: false, avgGpa: 3.62, csRating: "7.5/10", entRating: "7.5/10" },
+
+      // PROMINENT PRIVATE & HISTORICALLY BLACK COLLEGES & UNIVERSITIES (HBCUs)
       { name: "Boston University", type: "Private", policy: "Need-Aware", location: "Boston, MA", acceptRate: 14.0, sat25: 1380, sat75: 1510, act25: 31, act75: 34, finAidPercent: 49, avgAidPackage: "$42,000", fullNeedMet: true, avgGpa: 3.82, csRating: "8/10", entRating: "8/10" },
       { name: "Northeastern University", type: "Private", policy: "Need-Blind", location: "Boston, MA", acceptRate: 6.8, sat25: 1450, sat75: 1550, act25: 33, act75: 35, finAidPercent: 48, avgAidPackage: "$41,000", fullNeedMet: true, avgGpa: 3.88, csRating: "8.5/10", entRating: "8/10" },
       { name: "Howard University", type: "Private", policy: "Merit-Based", location: "Washington, DC", acceptRate: 35.0, sat25: 1140, sat75: 1300, act25: 22, act75: 28, finAidPercent: 64, avgAidPackage: "$22,500", fullNeedMet: false, avgGpa: 3.65, csRating: "7.5/10", entRating: "8/10" },
@@ -693,10 +685,9 @@
       { name: "Pepperdine University", type: "Private", policy: "Need-Aware", location: "Malibu, CA", acceptRate: 52.0, sat25: 1240, sat75: 1420, act25: 27, act75: 32, finAidPercent: 47, avgAidPackage: "$33,400", fullNeedMet: false, avgGpa: 3.69, csRating: "7/10", entRating: "7.5/10" }
     ];
 
-    let currentUserUid = null;
-
-    let profileState = {
-      email: "",
+    let profileState = JSON.parse(localStorage.getItem('apex_v5_profile')) || {
+      email: "student@school.edu",
+      password: "••••••••",
       gpa: 3.85, 
       rigor: "4", 
       satOption: "score", 
@@ -711,44 +702,18 @@
       lorScore: 4.0
     };
 
-    let selectedColleges = [
+    let selectedColleges = JSON.parse(localStorage.getItem('apex_v5_colleges')) || [
       { name: "Amherst College", status: "In Progress", outcome: "Awaiting Feedback" },
       { name: "Vanderbilt University", status: "Submitted", outcome: "Accepted" },
       { name: "Stanford University", status: "Not Started", outcome: "Awaiting Feedback" }
     ];
 
-    onAuthStateChanged(auth, async (user) => {
-      if (user) {
-        currentUserUid = user.uid;
-        document.getElementById('authOverlay').style.display = 'none';
-        
-        try {
-          const docRef = doc(db, "users", user.uid);
-          const docSnap = await getDoc(docRef);
-          if (docSnap.exists()) {
-            const data = docSnap.data();
-            if (data.profile) profileState = data.profile;
-            if (data.colleges) selectedColleges = data.colleges;
-          } else {
-            profileState.email = user.email;
-            await setDoc(docRef, { profile: profileState, colleges: selectedColleges });
-          }
-        } catch (err) {
-          console.error("Error loading user profile:", err);
-        }
-        renderAll();
-      } else {
-        currentUserUid = null;
-        document.getElementById('authOverlay').style.display = 'flex';
-      }
-    });
-
-    window.toggleDrawer = function() {
+    function toggleDrawer() {
       document.getElementById('drawer').classList.toggle('active');
       document.getElementById('drawerOverlay').classList.toggle('active');
-    };
+    }
 
-    window.togglePasswordVisibility = function(inputId, btn) {
+    function togglePasswordVisibility(inputId, btn) {
       const input = document.getElementById(inputId);
       if (input.type === "password") {
         input.type = "text";
@@ -757,9 +722,9 @@
         input.type = "password";
         btn.innerText = "👁️";
       }
-    };
+    }
 
-    window.switchView = function(viewId) {
+    function switchView(viewId) {
       document.querySelectorAll('.view-panel').forEach(panel => panel.classList.remove('active'));
       document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
       
@@ -778,10 +743,10 @@
       if (document.getElementById('drawer').classList.contains('active')) toggleDrawer();
       renderAll();
       window.scrollTo({ top: 0, behavior: 'smooth' });
-    };
+    }
 
     let authMode = 'login';
-    window.switchAuthTab = function(type) {
+    function switchAuthTab(type) {
       authMode = type;
       document.querySelectorAll('.auth-tab').forEach(t => t.classList.remove('active'));
       if (type === 'login') {
@@ -791,36 +756,29 @@
         document.getElementById('tabSignup').classList.add('active');
         document.getElementById('authSubmitBtn').innerText = 'Create Account';
       }
-    };
+    }
 
-    window.handleAuth = async function(e) {
+    function handleAuth(e) {
       e.preventDefault();
       const emailInput = document.getElementById('authEmail').value.trim();
       const passInput = document.getElementById('authPassword').value;
 
-      try {
-        if (authMode === 'signup') {
-          const userCred = await createUserWithEmailAndPassword(auth, emailInput, passInput);
-          profileState.email = userCred.user.email;
-          await setDoc(doc(db, "users", userCred.user.uid), { profile: profileState, colleges: selectedColleges });
-        } else {
-          await signInWithEmailAndPassword(auth, emailInput, passInput);
-        }
-      } catch (error) {
-        alert("Authentication Error: " + error.message);
-      }
-    };
+      if (emailInput) profileState.email = emailInput;
+      if (passInput) profileState.password = passInput;
 
-    window.handleLogout = async function() {
-      try {
-        await signOut(auth);
-        if (document.getElementById('drawer').classList.contains('active')) toggleDrawer();
-      } catch (err) {
-        console.error("Sign out error", err);
-      }
-    };
+      localStorage.setItem('apex_v5_profile', JSON.stringify(profileState));
+      document.getElementById('authOverlay').style.display = 'none';
+      switchView('dashboard');
+    }
 
+    function handleLogout() {
+      document.getElementById('authOverlay').style.display = 'flex';
+      if (document.getElementById('drawer').classList.contains('active')) toggleDrawer();
+    }
+
+    // ACCURATE HOLISTIC CLASSIFICATION ALGORITHM
     function calculateUniversityOdds(uni) {
+      // 1. GPA Weight (35%)
       const gpaDiff = profileState.gpa - uni.avgGpa;
       let gpaScore = 30;
       if (gpaDiff >= 0.05) gpaScore = 35;
@@ -829,7 +787,8 @@
       else if (gpaDiff >= -0.2) gpaScore = 18;
       else gpaScore = 10;
 
-      let testScore = 20; 
+      // 2. Testing Weight (30%) - Compare to 25th-75th Percentiles
+      let testScore = 20; // baseline if test optional
       if (profileState.satOption === 'score' && profileState.sat) {
         if (profileState.sat >= uni.sat75) testScore = 30;
         else if (profileState.sat >= (uni.sat25 + uni.sat75) / 2) testScore = 25;
@@ -837,6 +796,7 @@
         else testScore = 8;
       }
 
+      // 3. Extracurriculars Weight (20%)
       let ecScore = 0;
       profileState.activities.forEach(a => {
         if (a.tier === '1') ecScore += 7;
@@ -845,15 +805,20 @@
       });
       ecScore = Math.min(20, ecScore);
 
+      // 4. Curriculum Rigor (15%)
       const rigorScore = (parseInt(profileState.rigor) / 5) * 15;
-      const rawHolisticScore = gpaScore + testScore + ecScore + rigorScore;
 
+      const rawHolisticScore = gpaScore + testScore + ecScore + rigorScore; // Max ~100
+
+      // Calculate final odds based on baseline acceptance rate and student score
       let odds = Math.round((rawHolisticScore / 100) * (uni.acceptRate * 2.8));
       odds = Math.min(95, Math.max(2, odds));
 
+      // Rigorous Classification Rules
       let category = "Target";
       let badgeClass = "badge-target";
 
+      // Super selective schools (<10% Acceptance Rate) are ALWAYS Reach unless exceptionally qualified
       if (uni.acceptRate < 10) {
         category = "Reach";
         badgeClass = "badge-reach";
@@ -871,7 +836,8 @@
       return { odds, category, badgeClass };
     }
 
-    window.handleFilteredSearch = function() {
+    // SEARCH & FILTER ENGINE WITH ALL REQUIRED EXPLICIT FILTERS AND TOP STACKING
+    function handleFilteredSearch() {
       const resultsContainer = document.getElementById('searchResults');
       const query = document.getElementById('collegeSearchInput').value.trim().toLowerCase();
       
@@ -889,6 +855,8 @@
         const matchesQuery = !query || uni.name.toLowerCase().includes(query) || uni.location.toLowerCase().includes(query);
         const matchesType = typeFilter === 'all' || uni.type === typeFilter;
         const matchesPolicy = policyFilter === 'all' || uni.policy === policyFilter;
+        
+        // Filter by MAX Financial Aid Cap (Percentage receiving aid <= max limit selected)
         const matchesAid = uni.finAidPercent <= maxAidFilter;
 
         const oddsRes = calculateUniversityOdds(uni);
@@ -928,35 +896,23 @@
         });
       }
       resultsContainer.classList.add('active');
-    };
-
-    async function persistUserData() {
-      if (!currentUserUid) return;
-      try {
-        await setDoc(doc(db, "users", currentUserUid), {
-          profile: profileState,
-          colleges: selectedColleges
-        }, { merge: true });
-      } catch (err) {
-        console.error("Error saving data to Firebase:", err);
-      }
     }
 
-    window.addCollege = async function(name) {
+    function addCollege(name) {
       if (!selectedColleges.some(c => c.name === name)) {
         selectedColleges.push({ name: name, status: "Not Started", outcome: "Awaiting Feedback" });
-        await persistUserData();
+        localStorage.setItem('apex_v5_colleges', JSON.stringify(selectedColleges));
         renderAll();
       }
       document.getElementById('collegeSearchInput').value = '';
       document.getElementById('searchResults').classList.remove('active');
-    };
+    }
 
-    window.removeCollege = async function(name) {
+    function removeCollege(name) {
       selectedColleges = selectedColleges.filter(c => c.name !== name);
-      await persistUserData();
+      localStorage.setItem('apex_v5_colleges', JSON.stringify(selectedColleges));
       renderAll();
-    };
+    }
 
     function populateCDSSchoolSelect() {
       const select = document.getElementById('cdsSelectSchool');
@@ -971,7 +927,7 @@
       runCDSComparison();
     }
 
-    window.runCDSComparison = function() {
+    function runCDSComparison() {
       const select = document.getElementById('cdsSelectSchool');
       if(!select) return;
       const selectedName = select.value;
@@ -1006,9 +962,9 @@
           </div>
         </div>
       `;
-    };
+    }
 
-    window.evaluateLORWithAI = async function() {
+    async function evaluateLORWithAI() {
       const text = document.getElementById('lorText').value.trim();
       const resBox = document.getElementById('lorResultBox');
       const resText = document.getElementById('lorResultText');
@@ -1043,7 +999,7 @@
         resText.innerText = "Local Evaluation: Strong recommendation letter demonstrating solid engagement and leadership qualities. Score: 4.5/5.0";
         profileState.lorScore = 4.5;
       }
-    };
+    }
 
     function renderActivities() {
       const container = document.getElementById('activitiesList');
@@ -1076,17 +1032,18 @@
       if(addBtn) addBtn.style.display = profileState.activities.length >= 10 ? 'none' : 'inline-flex';
     }
 
-    window.addActivity = function() { if(profileState.activities.length < 10) { profileState.activities.push({title:'', org:'', description:'', tier:'3'}); renderActivities(); } };
-    window.removeActivity = function(idx) { profileState.activities.splice(idx, 1); renderActivities(); };
-    window.updateActivity = function(idx, field, val) { profileState.activities[idx][field] = val; };
+    function addActivity() { if(profileState.activities.length < 10) { profileState.activities.push({title:'', org:'', description:'', tier:'3'}); renderActivities(); } }
+    function removeActivity(idx) { profileState.activities.splice(idx, 1); renderActivities(); }
+    function updateActivity(idx, field, val) { profileState.activities[idx][field] = val; }
 
-    window.toggleTestInput = function(type) {
+    function toggleTestInput(type) {
       if(type === 'sat') document.getElementById('satScoreGroup').style.display = document.getElementById('profSatOption').value === 'score' ? 'flex' : 'none';
       else document.getElementById('actScoreGroup').style.display = document.getElementById('profActOption').value === 'score' ? 'flex' : 'none';
-    };
+    }
 
     function renderAll() {
-      if(document.getElementById('profEmail')) document.getElementById('profEmail').value = profileState.email || '';
+      if(document.getElementById('profEmail')) document.getElementById('profEmail').value = profileState.email || 'student@school.edu';
+      if(document.getElementById('profPassword')) document.getElementById('profPassword').value = profileState.password || '';
       if(document.getElementById('profGpa')) document.getElementById('profGpa').value = profileState.gpa;
       if(document.getElementById('profRigor')) document.getElementById('profRigor').value = profileState.rigor;
       if(document.getElementById('profSatOption')) document.getElementById('profSatOption').value = profileState.satOption;
@@ -1101,6 +1058,7 @@
 
       populateCDSSchoolSelect();
 
+      // Dashboard Table Rendering
       const dashBody = document.getElementById('dashboardTableBody');
       if(dashBody) {
         dashBody.innerHTML = '';
@@ -1135,6 +1093,7 @@
         document.getElementById('statReach').innerText = r;
       }
 
+      // My Colleges Manager Table Rendering
       const mgrBody = document.getElementById('collegesManagerTableBody');
       if(mgrBody) {
         mgrBody.innerHTML = '';
@@ -1151,7 +1110,7 @@
             <td><small style="color:var(--text-muted);">${uni.type}</small> <span class="policy-tag ${policyClass}">${uni.policy}</span></td>
             <td><strong style="color:#a5b4fc;">${uni.avgAidPackage}</strong> <small style="color:var(--text-muted);">(${uni.finAidPercent}%)</small></td>
             <td>
-              <select class="form-control" style="padding: 8px 12px; font-size: 0.85rem; min-height: 40px;" onchange="updateCollegeStatus('${col.name.replace(/'/g, "\\'")}', this.value)">
+              <select class="form-control" style="padding: 8px 12px; font-size: 0.85rem; min-height: 40px;" onchange="updateCollegeStatus('${col.name}', this.value)">
                 <option value="Not Started" ${col.status === 'Not Started' ? 'selected' : ''}>Not Started</option>
                 <option value="In Progress" ${col.status === 'In Progress' ? 'selected' : ''}>In Progress</option>
                 <option value="Submitted" ${col.status === 'Submitted' ? 'selected' : ''}>Submitted</option>
@@ -1159,7 +1118,7 @@
             </td>
             <td>
               ${col.status === 'Submitted' ? `
-                <select class="form-control" style="padding: 8px 12px; font-size: 0.85rem; min-height: 40px;" onchange="updateCollegeOutcome('${col.name.replace(/'/g, "\\'")}', this.value)">
+                <select class="form-control" style="padding: 8px 12px; font-size: 0.85rem; min-height: 40px;" onchange="updateCollegeOutcome('${col.name}', this.value)">
                   <option value="Awaiting Feedback" ${col.outcome === 'Awaiting Feedback' ? 'selected' : ''}>Awaiting Feedback</option>
                   <option value="Accepted" ${col.outcome === 'Accepted' ? 'selected' : ''}>Accepted</option>
                   <option value="Waitlisted" ${col.outcome === 'Waitlisted' ? 'selected' : ''}>Waitlisted</option>
@@ -1168,36 +1127,27 @@
                 </select>
               ` : `<small style="color: var(--text-subtle);">N/A</small>`}
             </td>
-            <td><button type="button" style="color:var(--danger); border:none; background:none; cursor:pointer; font-size:1.1rem; font-weight:700; padding: 6px;" onclick="removeCollege('${col.name.replace(/'/g, "\\'")}')">✕</button></td>
+            <td><button style="color:var(--danger); border:none; background:none; cursor:pointer; font-size:1.1rem; font-weight:700; padding: 6px;" onclick="removeCollege('${col.name}')">✕</button></td>
           `;
           mgrBody.appendChild(tr);
         });
       }
     }
 
-    window.updateCollegeStatus = async function(name, val) {
+    function updateCollegeStatus(name, val) {
       const col = selectedColleges.find(c => c.name === name);
-      if(col) { 
-        col.status = val; 
-        if (val !== 'Submitted') {
-          col.outcome = 'Awaiting Feedback';
-        }
-        await persistUserData(); 
-        renderAll(); 
-      }
-    };
+      if(col) { col.status = val; localStorage.setItem('apex_v5_colleges', JSON.stringify(selectedColleges)); renderAll(); }
+    }
 
-    window.updateCollegeOutcome = async function(name, val) {
+    function updateCollegeOutcome(name, val) {
       const col = selectedColleges.find(c => c.name === name);
-      if(col) { 
-        col.outcome = val; 
-        await persistUserData(); 
-        renderAll(); 
-      }
-    };
+      if(col) { col.outcome = val; localStorage.setItem('apex_v5_colleges', JSON.stringify(selectedColleges)); renderAll(); }
+    }
 
-    window.saveProfile = async function(e) {
+    function saveProfile(e) {
       e.preventDefault();
+      profileState.email = document.getElementById('profEmail').value.trim();
+      profileState.password = document.getElementById('profPassword').value;
       profileState.gpa = parseFloat(document.getElementById('profGpa').value);
       profileState.rigor = document.getElementById('profRigor').value;
       profileState.satOption = document.getElementById('profSatOption').value;
@@ -1206,10 +1156,35 @@
       profileState.act = document.getElementById('profAct').value ? parseInt(document.getElementById('profAct').value) : null;
       profileState.lorText = document.getElementById('lorText').value;
 
-      await persistUserData();
-      alert("Profile and college list successfully saved to your private Firebase cloud account!");
+      localStorage.setItem('apex_v5_profile', JSON.stringify(profileState));
+      alert("Profile and account login details successfully saved!");
       renderAll();
+    }
+
+    renderAll();
+  </script>
+  
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
+    import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-analytics.js";
+    
+    // Your web app's Firebase configuration
+    const firebaseConfig = {
+      apiKey: "AIzaSyBUX4nsKqNQyRjUA6NCd_pbEJGQlbn7Vbw",
+      authDomain: "apexapply-69cd6.firebaseapp.com",
+      projectId: "apexapply-69cd6",
+      storageBucket: "apexapply-69cd6.firebasestorage.app",
+      messagingSenderId: "510755433251",
+      appId: "1:510755433251:web:1b33e2a9116636a6cd7a96",
+      measurementId: "G-CMLT4PGSN5"
     };
+
+    // Initialize Firebase
+    const app = initializeApp(firebaseConfig);
+    const analytics = getAnalytics(app);
+    
+    // Expose app to global scope for future vanilla JS integration
+    window.firebaseApp = app;
   </script>
 </body>
 </html>
