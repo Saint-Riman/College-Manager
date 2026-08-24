@@ -1,1 +1,27 @@
-<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>ApexApply</title><style>html,body,iframe{margin:0;width:100%;height:100%;border:0;background:#07090e}iframe{display:block}</style></head><body><iframe id="app" src="index-original.html" title="ApexApply"></iframe><script>const f=document.getElementById('app');f.addEventListener('load',()=>{const s=f.contentDocument.createElement('script');s.src='admissions-profile-extension.js';f.contentDocument.body.appendChild(s)});</script></body></html>
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ApexApply | Dashboard</title>
+</head>
+<body style="margin:0;background:#07090e;color:#f8fafc">
+<script>
+(async function restoreApexApply(){
+  const originalUrl='https://raw.githubusercontent.com/Saint-Riman/College-Manager/c77762a10756a861e38e3fa173de1d03ae6c5424/index.html';
+  try {
+    const response=await fetch(originalUrl,{cache:'no-store'});
+    if(!response.ok) throw new Error('Unable to load the preserved original application ('+response.status+').');
+    let html=await response.text();
+    const extension='<script src="https://raw.githubusercontent.com/Saint-Riman/College-Manager/main/admissions-profile-extension.js"><\\/script>';
+    html=html.replace(/<\\/body>/i,extension+'<\\/body>');
+    document.open();
+    document.write(html);
+    document.close();
+  } catch(error) {
+    document.body.innerHTML='<div style="font-family:system-ui;padding:40px;max-width:700px;margin:auto"><h2>ApexApply could not be restored</h2><p>'+String(error.message||error)+'</p><p>Please refresh the page after confirming that the repository is available.</p></div>';
+  }
+})();
+</script>
+</body>
+</html>
